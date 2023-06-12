@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\User\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Admin\ProductController;
 
 
 /*
@@ -17,13 +16,16 @@ use App\Http\Controllers\Api\Admin\ProductController;
 |
 */
 
+Route::middleware('check.auth.api')->group(function (){
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+});
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
-    Route::apiResource('products', ProductController::class);
+    Route::apiResource('products', \App\Http\Controllers\Api\Admin\ProductController::class);
+    Route::apiResource('orders', \App\Http\Controllers\Api\Admin\OrderController::class);
 });
 
 //Route::post('/test', [\App\Http\Controllers\Api\User\Auth\elo::class, 'test']);

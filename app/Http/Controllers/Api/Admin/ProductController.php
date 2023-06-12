@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Support\Facades\File;
-use Illuminate\Http\Request;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Mockery\Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Mockery\Exception;
 
 class ProductController extends Controller
 {
@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        
+        return ProductResource::collection(Product::all());
     }
 
     /**
@@ -40,6 +40,7 @@ class ProductController extends Controller
         $product->price = (float)$request->price;
         $product->description = $request->description;
         $product->image = $fileName;
+        $product->in_stock = $request->in_stock;
         $product->save();
 
         return response($product);
@@ -49,9 +50,9 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return new ProductResource($product);
     }
 
     /**

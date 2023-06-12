@@ -18,18 +18,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::factory(10)->create();
+        \App\Models\Product::factory(10)->create();
 
-        // Create permissions
-        Permission::create(['name' => 'view product']);
-        Permission::create(['name' => 'create product']);
-        Permission::create(['name' => 'edit product']);
-        Permission::create(['name' => 'delete product']);
-        Permission::create(['name' => 'store product']);
+        // Seed premisstions
+        $this->call(OrderPermissionsSeeder::class);
+        $this->call(ProductPermissionsSeeder::class);
+
 
         // Create admin roles and assign permissions
         $adminRole = Role::create(['name' => 'admin']);
 
         $adminRole->syncPermissions([
+            'view any product',
             'view product',
             'create product',
             'edit product',
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             'store product'
         ]);
 
-        $user = User::create([
+        $adminUser = User::create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
@@ -45,11 +45,29 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        $user->assignRole('admin');
+        $adminUser->assignRole('admin');
 
-        // Create user roles and assign permissions
-        $userRole = Role::create(['name' => 'user']);
 
-        $userRole->givePermissionTo('view product');
+        // Create customer role and assign permissions
+        $customerRole = Role::create(['name' => 'customer']);
+
+        $customerRole->syncPermissions([
+            'view product',
+            'view order'
+            ]);
+
+
+        $adminRole->syncPermissions([
+            'view any order',
+            'view order',
+            'create order',
+            'edit order',
+            'delete order',
+            'store order'
+        ]);
+
+        $this->call(AddressSeeder::class);
+        $this->call(OrderSeeder::class);
+
     }
 }
