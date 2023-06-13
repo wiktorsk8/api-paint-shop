@@ -12,7 +12,7 @@ class OrderService
 {
     public function store(OrderDTO $dto): Order{
         $product = Product::findOrFail($dto->getProductId());
-
+        //dump('reached service', $dto->getCustomerId(), $dto->getProductId());
         if (!$product->in_stock) throw new Exception('product not in stock');
 
         $address = Address::create([

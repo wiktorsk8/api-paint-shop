@@ -20,6 +20,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        dump('gowno');
+
         $user->assignRole('customer');
 
         $token = $user->createToken('auth-token')->plainTextToken;

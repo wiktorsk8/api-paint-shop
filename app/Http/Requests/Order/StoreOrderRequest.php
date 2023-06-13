@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Order;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
 class StoreOrderRequest extends FormRequest
@@ -12,7 +14,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,6 +33,14 @@ class StoreOrderRequest extends FormRequest
             'street_number' => ['required', 'numeric', 'min:0'],
             'flat_number' => ['nullable', 'numeric', 'min:0']
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 
     public function prepareForValidation()

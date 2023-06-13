@@ -9,14 +9,11 @@ class Order extends Model
 {
     use HasFactory;
 
-
     protected $with = [
         'product',
         'address',
         'customer'
     ];
-
-
     protected $fillable = [
         'product_id',
         'customer_address_id',
@@ -30,12 +27,12 @@ class Order extends Model
 
 
     public function address(){
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(Address::class, 'customer_address_id');
     }
 
 
     public function customer(){
-        return $this->belongsTo(User::class, 'custom_user_id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
 }

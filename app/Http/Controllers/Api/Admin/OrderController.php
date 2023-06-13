@@ -15,7 +15,7 @@ class OrderController extends Controller
     protected $orderService;
     public function __construct(OrderService $orderService){
         $this->orderService = $orderService;
-//        $this->authorizeResource(Order::class, 'order');
+        $this->authorizeResource(Order::class, 'order');
     }
 
     public function index(){
@@ -23,6 +23,7 @@ class OrderController extends Controller
     }
 
     public function store(StoreOrderRequest $request){
+        //dump('request validation passed.');
         $orderData = new OrderDTO(
             $request->product_id,
             $request->customer_id,

@@ -14,11 +14,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
 
-    protected $with = [
-        'orders'
-    ];
-
-
     protected $fillable = [
         'name',
         'email',

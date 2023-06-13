@@ -24,17 +24,39 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderPermissionsSeeder::class);
         $this->call(ProductPermissionsSeeder::class);
 
+        // Create customer role and assign permissions
+        $customerRole = Role::create(['name' => 'customer']);
 
-        // Create admin roles and assign permissions
+        $customerRole->syncPermissions([
+            'view product',
+            'view order'
+            ]);
+
+        $this->seedAdmin();
+
+        $this->call(AddressSeeder::class);
+        $this->call(OrderSeeder::class);
+
+    }
+
+    private function seedAdmin(){
         $adminRole = Role::create(['name' => 'admin']);
 
         $adminRole->syncPermissions([
+            // products
             'view any product',
             'view product',
             'create product',
             'edit product',
             'delete product',
-            'store product'
+            'store product',
+            // orders
+            'view any order',
+            'view order',
+            'create order',
+            'edit order',
+            'delete order',
+            'store order'
         ]);
 
         $adminUser = User::create([
@@ -46,28 +68,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $adminUser->assignRole('admin');
-
-
-        // Create customer role and assign permissions
-        $customerRole = Role::create(['name' => 'customer']);
-
-        $customerRole->syncPermissions([
-            'view product',
-            'view order'
-            ]);
-
-
-        $adminRole->syncPermissions([
-            'view any order',
-            'view order',
-            'create order',
-            'edit order',
-            'delete order',
-            'store order'
-        ]);
-
-        $this->call(AddressSeeder::class);
-        $this->call(OrderSeeder::class);
-
     }
 }
