@@ -18,11 +18,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_admin' => false,
         ]);
-
-        dump('gowno');
-
-        $user->assignRole('customer');
 
         $token = $user->createToken('auth-token')->plainTextToken;
 

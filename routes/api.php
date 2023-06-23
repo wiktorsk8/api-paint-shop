@@ -3,7 +3,8 @@
 use App\Http\Controllers\Api\User\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\Admin\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,22 @@ Route::middleware('check.auth.api')->group(function (){
 });
 
 
+
+Route::get('/products',[ProductController::class, 'index']);
+Route::get('/products/{product}',[ProductController::class, 'show']);
+
+
 Route::middleware(['auth:sanctum'])->group(function (){
-    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
-    Route::apiResource('products', \App\Http\Controllers\Api\Admin\ProductController::class);
-    Route::apiResource('orders', \App\Http\Controllers\Api\Admin\OrderController::class);
+    Route::post('/logout',[AuthController::class, 'logout']);
+
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{product}', [ProductController::class, 'update']);
+    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+    Route::apiResource('orders', OrderController::class);
+    Route::get('orders/tracking/{order}', [OrderController::class, 'tracking']);
 });
 
-//Route::post('/test', [\App\Http\Controllers\Api\User\Auth\elo::class, 'test']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

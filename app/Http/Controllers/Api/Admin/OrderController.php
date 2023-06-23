@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\DTO\OrderDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Models\Order;
-use App\DTO\OrderDTO;
+use App\Models\Order\Order;
 use App\Services\OrderService;
 
 class OrderController extends Controller
@@ -51,5 +51,11 @@ class OrderController extends Controller
         $order->delete();
 
         return response()->json(['message' => 'Product deleted succesfully'], 200);
+    }
+
+    public function tracking(Order $order){
+        $this->authorize('tracking', $order);
+
+        return new OrderResource($order);
     }
 }

@@ -43,7 +43,7 @@ class ProductController extends Controller
         $product->in_stock = $request->in_stock;
         $product->save();
 
-        return response($product);
+        return  new ProductResource($product);
 
     }
 
@@ -68,7 +68,7 @@ class ProductController extends Controller
 
         $product->update($request->validated());
 
-        return response()->json([$product]);
+        return new ProductResource($product);
     }
 
     /**

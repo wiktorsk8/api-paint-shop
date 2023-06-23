@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Order;
+use App\Models\Order\Order;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class OrderPolicy
 {
@@ -13,7 +13,7 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view any order');
+        return $user->is_admin;
     }
 
     /**
@@ -21,7 +21,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $user->can('view order');
+        return $user->is_admin;
     }
 
     /**
@@ -29,7 +29,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('store order');
+        return !$user->is_admin;
     }
 
     /**
@@ -37,7 +37,15 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        return true;
+        if ($user->is_admin){
+            return true;
+        }
+
+        if ($user->id === $order->customer_id){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -45,7 +53,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +61,7 @@ class OrderPolicy
      */
     public function restore(User $user, Order $order): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -61,6 +69,16 @@ class OrderPolicy
      */
     public function forceDelete(User $user, Order $order): bool
     {
-        return true;
+        return $user->is_admin;
     }
+
+    public function tracking(User $user, Order $order): bool
+    {
+        if ($user->id === $order->customer_id || $user->is_admin){
+            return true;
+        }
+
+        return false;
+    }
+
 }
