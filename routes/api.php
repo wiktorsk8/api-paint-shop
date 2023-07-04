@@ -17,26 +17,47 @@ use App\Http\Controllers\Api\Admin\OrderController;
 |
 */
 
+Route::get('/test', function (){
+    dump(\Illuminate\Support\Facades\Auth::check());
+    return 0;
+});
+
+
+// Authentication
 Route::middleware('check.auth.api')->group(function (){
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-
-
-Route::get('/products',[ProductController::class, 'index']);
-Route::get('/products/{product}',[ProductController::class, 'show']);
-
-
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('/logout',[AuthController::class, 'logout']);
+});
 
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{product}', [ProductController::class, 'update']);
-    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
-    Route::apiResource('orders', OrderController::class);
-    Route::get('orders/tracking/{order}', [OrderController::class, 'tracking']);
+// Products
+Route::controller(ProductController::class)->group(function (){
+    Route::get('/products', 'index');
+    Route::get('/products/{product}', 'show');
+    Route::middleware(['auth:sanctum'])->group(function (){
+        Route::post('/products', 'store');
+        Route::put('/products/{product}', 'update');
+        Route::delete('/products/{product}', 'destroy');
+    });
+});
+
+
+// Orders
+Route::controller(OrderController::class)->group(function (){
+    Route::post('/orders', 'store');
+    Route::get('/orders/tracking', 'trackingGuest');
+
+    Route::middleware(['auth:sanctum'])->group(function (){
+        Route::get('/orders', 'index');
+        Route::get('/orders/{order}', 'show');
+        Route::put('/orders/{order}', 'update');
+        Route::delete('/orders/{order}', 'destroy');
+        Route::get('/orders/tracking/{order}', 'tracking');
+    });
 });
 
 

@@ -5,8 +5,10 @@ namespace App\DTO;
 class OrderDTO{
 
     public function __construct(
+        private readonly string $name,
+        private readonly string $email,
+        private readonly string $phone,
         private readonly int $product_id,
-        private readonly int $customer_id,
         private readonly string $city,
         private readonly string $postal_code,
         private readonly string $street_name,
@@ -14,12 +16,17 @@ class OrderDTO{
         private readonly ?int $flat_number,
     ){}
 
+    public function getName(){
+        return $this->name;
+    }
+    public function getEmail(){
+        return $this->email;
+    }
+    public function getPhone(){
+        return $this->phone;
+    }
     public function getProductId(){
         return $this->product_id;
-    }
-
-    public function getCustomerId(){
-        return $this->customer_id;
     }
 
     public function getCity(){
@@ -41,7 +48,4 @@ class OrderDTO{
     public function getFlatNumber(){
         return $this->flat_number;
     }
-
-
-
 }

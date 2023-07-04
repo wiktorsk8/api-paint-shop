@@ -6,9 +6,11 @@ use App\DTO\OrderDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\UpdateOrderRequest;
+use App\Http\Resources\GuestOrderResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order\Order;
 use App\Services\OrderService;
+use PHPUnit\Framework\Exception;
 
 class OrderController extends Controller
 {
@@ -23,21 +25,23 @@ class OrderController extends Controller
     }
 
     public function store(StoreOrderRequest $request){
-        //dump('request validation passed.');
         $orderData = new OrderDTO(
+            $request->name,
+            $request->email,
+            $request->phone,
             $request->product_id,
-            $request->customer_id,
             $request->city,
             $request->postal_code,
             $request->street_name,
             $request->street_number,
-            $request->flat_number,
+            $request->flat_number
         );
 
         $order = $this->orderService->store($orderData);
 
         return new OrderResource($order);
     }
+
 
     public function show(Order $order){
         return response()->json($order);
@@ -57,5 +61,9 @@ class OrderController extends Controller
         $this->authorize('tracking', $order);
 
         return new OrderResource($order);
+    }
+
+    public function trackingGuest(Order $order){
+        return new GuestOrderResource($order);
     }
 }

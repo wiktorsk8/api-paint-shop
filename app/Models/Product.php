@@ -18,7 +18,7 @@ class Product extends Model
         'in_stock'
     ];
 
-
+    
     public function orders(){
         return $this->hasMany(Order::class, 'product_id');
     }

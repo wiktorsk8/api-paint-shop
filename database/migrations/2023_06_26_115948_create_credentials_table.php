@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignId('product_id');
-            $table->foreignId('customer_address_id');
-            $table->foreignId('customer_id')->nullable();
+        Schema::create('credentials', function (Blueprint $table) {
+            $table->id();
+            $table->json('data');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('credentials');
     }
 };

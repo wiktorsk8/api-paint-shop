@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Order\Address;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,11 +15,18 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request){
 
+        $address = Address::create([
+            'data' => $request->data,
+        ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'is_admin' => false,
+            'address_id' => $address->id
+
         ]);
 
         $token = $user->createToken('auth-token')->plainTextToken;

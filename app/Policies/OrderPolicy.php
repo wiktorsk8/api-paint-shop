@@ -27,9 +27,9 @@ class OrderPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(?User $user): bool
     {
-        return !$user->is_admin;
+        return true;
     }
 
     /**
@@ -74,6 +74,7 @@ class OrderPolicy
 
     public function tracking(User $user, Order $order): bool
     {
+        dump($user, $order);
         if ($user->id === $order->customer_id || $user->is_admin){
             return true;
         }

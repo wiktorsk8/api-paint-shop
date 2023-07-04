@@ -4,24 +4,32 @@ namespace App\Models\Order;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $with = [
         'product',
         'address',
-        'customer'
+        'customer',
+        'credentials',
+        'state'
     ];
     protected $fillable = [
         'product_id',
         'customer_address_id',
-        'customer_id'
+        'customer_id',
+        'user_credentials'
     ];
 
+
+    public function credentials(){
+        return $this->belongsTo(Credentials::class, 'user_credentials');
+    }
 
     public function product(){
         return $this->belongsTo(Product::class);
