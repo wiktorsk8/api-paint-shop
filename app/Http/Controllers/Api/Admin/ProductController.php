@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         if (!$request->hasFile('image')){
-            return throw new Exception('Image file not found in request.');
+            throw new Exception('Image file not found in request.');
         }
 
         $fileName = Str::random(3) . time() . '.' . $request->image->extension();
