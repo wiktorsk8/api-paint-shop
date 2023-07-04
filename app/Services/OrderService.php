@@ -4,18 +4,19 @@ namespace App\Services;
 
 use App\DTO\OrderDTO;
 use App\Models\Order\Address;
+use App\Models\Order\Credentials;
 use App\Models\Order\Order;
 use App\Models\Product;
 use Exception;
 use App\Models\Order\State;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
     public function store(OrderDTO $dto): Order{
         $product = Product::findOrFail($dto->getProductId());
-        //dump('reached service', $dto->getCustomerId(), $dto->getProductId());
-        if (!$product->in_stock) throw new Exception('product not in stock');
 
+        if (!$product->in_stock) throw new Exception('product not in stock');
 
 
         $address = Address::create([
@@ -28,14 +29,20 @@ class OrderService
             ]
         ]);
 
+        $credentials = Credentials::create([
+            'data' => [
+                'name' => $dto->getName(),
+                'email' => $dto->getEmail(),
+                'phone' => $dto->getPhone()
+            ]
+        ]);
 
         $order = Order::create([
             'product_id' => $dto->getProductId(),
             'customer_address_id' => $address->id,
-            'customer_id' => $dto->getCustomerId()
+            'customer_id' => auth('sanctum')->check() ? auth('sanctum')->id() : null,
+            'user_credentials' => $credentials->id
         ]);
-
-
 
         $this->storeState($order->id);
 

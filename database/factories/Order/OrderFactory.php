@@ -24,6 +24,7 @@ class OrderFactory extends Factory
             'product_id' => $this->randomId(Product::class),
             'customer_address_id' => $this->randomId(Address::class),
             'customer_id' => $this->randomId(User::class),
+            'user_credentials' => 0
         ];
     }
 

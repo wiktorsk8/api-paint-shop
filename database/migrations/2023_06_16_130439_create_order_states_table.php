@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('order_states', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
+            $table->foreignUuid('order_id');
             $table->string('value');
             $table->timestamps();
         });

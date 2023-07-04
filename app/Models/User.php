@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Order\Address;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -17,7 +18,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin'
+        'is_admin',
+        'address_id',
+        'phone',
     ];
 
     protected $hidden = [
@@ -31,6 +34,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function address(){
+       return $this->belongsTo(Address::class);
+    }
 
     public function orders(){
         return $this->hasMany(Order::class, 'customer_id');
