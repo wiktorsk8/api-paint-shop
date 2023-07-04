@@ -44,7 +44,7 @@ class OrderController extends Controller
     }
 
     public function update(UpdateOrderRequest $request){
-        return throw new Exception('Checkout not made yet');
+        throw new Exception('Checkout not made yet');
     }
 
     public function destroy(Order $order){
