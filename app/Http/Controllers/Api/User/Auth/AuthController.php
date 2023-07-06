@@ -15,18 +15,12 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request){
 
-        $address = Address::create([
-            'data' => $request->data,
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'is_admin' => false,
-            'address_id' => $address->id
-
         ]);
 
         $token = $user->createToken('auth-token')->plainTextToken;
@@ -35,10 +29,11 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request){
-
         $credentials = $request->validated();
 
         if (auth()->attempt($credentials)) {
+            
+            /** @var User $user */
             $user = Auth::user();
             $token = $user->createToken('auth-token')->plainTextToken;
 
@@ -49,8 +44,7 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        /** @var User $user */
-        
+        /** @var User $user */ 
         $user = Auth::user();
         if ($user){
             $user->currentAccessToken()->delete();

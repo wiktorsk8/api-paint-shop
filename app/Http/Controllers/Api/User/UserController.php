@@ -10,6 +10,11 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     public function index(){
         return UserResource::collection(User::all());
     }
@@ -19,7 +24,7 @@ class UserController extends Controller
     }
 
     public function update(UpdateUserRequest $request, User $user){
-        $user->update($request->validaed());
+        $user->update($request->validated());
 
         return new UserResource($user);
     }

@@ -19,7 +19,6 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
-        'address_id',
         'phone',
     ];
 
@@ -33,10 +32,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function address(){
-       return $this->belongsTo(Address::class);
-    }
 
     public function orders(){
         return $this->hasMany(Order::class, 'customer_id');
