@@ -14,8 +14,14 @@ class UserPolicy
         
     }
 
-    public function viewAny(User $user): bool{
-        return $user->is_admin;
+    public function viewAny(User $user, User $userToView): bool{
+        if ($user->is_admin) return true;
+
+        if ($user->id == $userToView->id){
+            return true;
+        }
+
+        return false;
     }
 
     public function view(User $user): bool{
