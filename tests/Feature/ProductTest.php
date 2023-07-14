@@ -40,7 +40,5 @@ class ProductTest extends TestCase
         $testUser->delete();
         $response->assertCreated();
         Storage::disk('images')->assertExists('images');
-        
-        
     }
 }

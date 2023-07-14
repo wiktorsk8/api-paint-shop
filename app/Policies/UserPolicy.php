@@ -29,7 +29,7 @@ class UserPolicy
     public function delete(User $user, User $userToDelete): bool{
         if ($user->is_admin) return true;
 
-        if ($user->id == $userToDelete->id){
+        if ($user->id === $userToDelete->id){
             return true;
         }
 
