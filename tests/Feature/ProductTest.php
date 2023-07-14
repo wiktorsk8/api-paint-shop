@@ -31,7 +31,7 @@ class ProductTest extends TestCase
 
         $response = $this->post('api/products',[
             'name' => $this->faker->name(),
-            'price' => $this->faker->randomFloat(),
+            'price' => $this->faker->randomFloat(2, 1, 9999999),
             'description' => $this->faker->paragraph(),
             'image' => $image,
             'in_stock' => true
