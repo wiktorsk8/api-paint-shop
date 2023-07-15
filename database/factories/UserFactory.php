@@ -28,6 +28,16 @@ class UserFactory extends Factory
         ];
     }
 
+    public function setAdmin(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
+            ];
+        });
+    }
+
+
     /**
      * Indicate that the model's email address should be unverified.
      */

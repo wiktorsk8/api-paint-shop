@@ -27,8 +27,10 @@ class UpdateProductRequest extends FormRequest
             'name' => ['nullable', 'string', 'max:255', 'min:3'],
             'price' => ['nullable'],
             'description' => ['nullable', 'string'],
-            'image' => ['nullable', 'image']
+            'image' => ['nullable', 'image'],
+            'in_stock' => ['nullable', 'boolean']
         ];
+        
     }
 
     protected function failedValidation(Validator $validator)
