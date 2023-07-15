@@ -43,7 +43,7 @@ class ProductController extends Controller
         $product->in_stock = $request->in_stock;
         $product->save();
 
-        return  new ProductResource($product);
+        return response(new ProductResource($product), 201);
 
     }
 
@@ -64,11 +64,18 @@ class ProductController extends Controller
             $fileName = Str::random(3) . time() . '.' . $request->image->extension();
             $request->image->storeAs('public/images', $fileName);
             File::delete('public/images/' . $product->image);
+            
+            $content = $request->validated();
+            $content['image'] = $fileName;
+
+            $product->update($content);
+            
+            return response(new ProductResource($product));
         }
 
         $product->update($request->validated());
 
-        return new ProductResource($product);
+        return response(new ProductResource($product), 200);
     }
 
     /**
@@ -85,6 +92,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return response()->json(['message' => 'Product deleted succesfully'], 200);
+        return response(['message' => 'Product deleted succesfully'], 200);
     }
 }
