@@ -33,6 +33,6 @@ class UserController extends Controller
         $id = $user->id;
         $user->delete();
 
-        return response()->json(['message' => "User (id: {$id}) deleted succesfully"], 200);
+        return response(['message' => "User (id: {$id}) deleted succesfully"], 200);
     }
 }

@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
             'phone' => 500400300
         ]);
 
-         $this->call(AddressSeeder::class);
-         $this->call(OrderSeeder::class);
+         //$this->call(AddressSeeder::class);
+         //$this->call(OrderSeeder::class);
 
     }
 
