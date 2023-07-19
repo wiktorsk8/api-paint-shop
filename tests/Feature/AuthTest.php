@@ -15,7 +15,6 @@ class AuthTest extends TestCase
      */
     public function test_register(): void
     {
-
         $email = $this->faker->email();
 
         $response = $this->post('api/register', [
@@ -39,8 +38,8 @@ class AuthTest extends TestCase
             }
 
             if ($key == 'email') {
-                $token = substr(2, $value);
-                $this->assertDatabaseHas('personal_access_tokens', ['token' => $token]);
+                $email = $value;
+                $this->assertDatabaseHas('users', ['email' => $email]);
 
                 break;
             }
