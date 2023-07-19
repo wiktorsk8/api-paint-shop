@@ -11,23 +11,21 @@ class Address extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data'
+        'user_id',
+        'first_name',
+        'last_name',
+        'phone',
+        'city',
+        'postal_code',
+        'street_name',
+        'street_number',
+        'flat_number',
+        'company_name',
+        'NIP',
+        'extra_info'
     ];
 
-
-    public function order(){
-        return $this->hasOne(Order::class, 'customer_address_id');
+    public function user(){
+        return $this->belongsTo(User::class);
     }
-
-
-    protected function data(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
-        );
-    }
-
-
-
 }

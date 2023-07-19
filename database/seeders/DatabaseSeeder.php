@@ -22,12 +22,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('123123123'),
-            'is_admin' => true,
-            'phone' => 500400300
+            'is_admin' => true
         ]);
 
-         //$this->call(AddressSeeder::class);
-         //$this->call(OrderSeeder::class);
+         $this->call(AddressSeeder::class);
+         $this->call(OrderSeeder::class);
 
     }
 

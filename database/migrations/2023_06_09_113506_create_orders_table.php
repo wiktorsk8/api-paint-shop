@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('product_id');
-            $table->json('receiver_details');
-            $table->json('receiver_address');
+            $table->json('details');
             $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
