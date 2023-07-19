@@ -18,7 +18,7 @@ class RedirectIfAuthenticatedApi
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::guard('api')->check()){
-            throw new Exception('user already logged in');
+            return response(['message' => 'User already logged in.'], 403);
         }
 
         return $next($request);

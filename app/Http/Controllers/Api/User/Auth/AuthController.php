@@ -25,7 +25,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
-        return response(compact('token','user'));
+        return response([
+            'token' => $token,
+            'user' => $user
+        ], 201);
     }
 
     public function login(LoginRequest $request){
@@ -42,7 +45,7 @@ class AuthController extends Controller
                 'user' => $user
             ], 200);
         } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response(['error' => 'Unauthorized'], 401);
         }
     }
 
