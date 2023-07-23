@@ -2,28 +2,36 @@
 
 namespace App\Models\Order;
 
-use App\Models\Product;
+use App\Models\OrderedProduct;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Order extends Model
 {
     use HasFactory, HasUuids;
 
     protected $with = [
-        'product',
-        'user'
+        'user',
+        'orderedProducts',
     ];
     protected $fillable = [
-        'product_id',
         'details',
-        'user_id'
+        'user_id',
+        'is_paid',
     ];
 
-    public function product(){
-        return $this->belongsTo(Product::class);
+    protected function details(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => json_decode($value),
+        );
+    }
+
+    public function orderedProducts(){
+        return $this->hasMany(OrderedProduct::class);
     }
 
     public function user(){

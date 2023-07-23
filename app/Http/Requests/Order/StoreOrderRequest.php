@@ -25,15 +25,19 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string'],
-            'email' => ['nullable' ,'email'],
-            'phone' => ['nullable', 'numeric', 'digits:9'],
-            'product_id' => ['required', 'numeric', 'min:1', 'max:2147483647'],
+            'product_id.*' => ['required', 'numeric', 'min:1', 'max:2147483647'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'email' => ['required' ,'email'],
+            'phone' => ['required', 'numeric', 'digits:9'],
             'city' => ['required', 'string', 'min:2' , 'max:80'],
             'postal_code' => ['required', 'digits:5'],
             'street_name' => ['required', 'string','max:80'],
             'street_number' => ['required', 'numeric', 'min:0'],
-            'flat_number' => ['nullable', 'numeric', 'min:0']
+            'flat_number' => ['nullable', 'numeric', 'min:0'],
+            'company_name' => ['nullable', 'string'],
+            'NIP' => ['nullable', 'numeric'],
+            'extra_info' => ['nullable', 'string']
         ];
     }
 
@@ -43,12 +47,5 @@ class StoreOrderRequest extends FormRequest
             'message' => 'Validation failed',
             'errors' => $validator->errors(),
         ], 422));
-    }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'customer_id' => Auth::id(),
-        ]);
     }
 }

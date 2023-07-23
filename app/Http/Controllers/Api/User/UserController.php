@@ -15,20 +15,24 @@ class UserController extends Controller
         $this->authorizeResource(User::class, 'user');
     }
 
+    // Only as admin
     public function index(){
         return UserResource::collection(User::all());
     }
 
+    // Only as admin or user can view himself
     public function show(User $user){
         return new UserResource($user);
     }
 
+    // Only as admin or user can update himself
     public function update(UpdateUserRequest $request, User $user){
         $user->update($request->validated());
 
         return new UserResource($user);
     }
 
+    // Only admin
     public function destroy(User $user){
         $id = $user->id;
         $user->delete();

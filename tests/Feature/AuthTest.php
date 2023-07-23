@@ -20,7 +20,6 @@ class AuthTest extends TestCase
         $response = $this->post('api/register', [
             'name' => $this->faker->name(),
             'email' => $email,
-            'phone' => $this->faker->randomNumber(9, true),
             'password' => 'password',
             'password_confirmation' => 'password'
         ]);
@@ -28,22 +27,10 @@ class AuthTest extends TestCase
         $response->assertCreated();
 
         $content = $response->decodeResponseJson();
+        $token = substr($content['token'], 2);
 
-        foreach ($content as $key => $value) {
-            if ($key == 'token') {
-                $token = substr(2, $value);
-                $this->assertDatabaseHas('personal_access_tokens', ['token' => hash('sha256', $token)]);
-
-                continue;
-            }
-
-            if ($key == 'email') {
-                $email = $value;
-                $this->assertDatabaseHas('users', ['email' => $email]);
-
-                break;
-            }
-        }
+        $this->assertDatabaseHas('personal_access_tokens', ['token' => hash('sha256', $token)]);
+        $this->assertDatabaseHas('users', ['email' => $email]);
     }
 
     public function test_register_redirect(): void
@@ -56,7 +43,6 @@ class AuthTest extends TestCase
         $response = $this->post('api/register', [
             'name' => $this->faker->name(),
             'email' => $email,
-            'phone' => $this->faker->randomNumber(9, true),
             'password' => 'password',
             'password_confirmation' => 'password'
         ]);

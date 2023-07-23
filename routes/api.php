@@ -58,9 +58,9 @@ Route::controller(OrderController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/orders', 'index');
         Route::get('/orders/{order}', 'show');
-        Route::put('/orders/{order}', 'update');
-        Route::delete('/orders/{order}', 'destroy');
-        Route::get('/orders/tracking/{order}', 'tracking');
+        Route::put('/orders/{order:uuid}', 'update');
+        Route::delete('/orders/{order:uuid}', 'destroy');
+        Route::get('/orders/tracking/{order:uuid}', 'tracking');
     });
 });
 

@@ -23,9 +23,9 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => $this->randomId(Product::class),
-            'details' => $this->randomId(Address::class),
+            'details' => ['here_will_be' => 'json_address_data'],
             'user_id' => $this->randomId(User::class),
+            'is_paid' => true
         ];
     }
 

@@ -15,26 +15,33 @@ use PHPUnit\Framework\Exception;
 class OrderController extends Controller
 {
     protected $orderService;
-    public function __construct(OrderService $orderService){
+    public function __construct(OrderService $orderService)
+    {
         $this->orderService = $orderService;
         $this->authorizeResource(Order::class, 'order');
     }
 
-    public function index(){
+    public function index()
+    {
         return response()->json(Order::all());
     }
 
-    public function store(StoreOrderRequest $request){
+    public function store(StoreOrderRequest $request)
+    {
         $orderData = new OrderDTO(
-            $request->name,
+            $request->product_id,
+            $request->first_name,
+            $request->last_name,
             $request->email,
             $request->phone,
-            $request->product_id,
             $request->city,
             $request->postal_code,
             $request->street_name,
             $request->street_number,
-            $request->flat_number
+            $request->flat_number,
+            $request->company_name,
+            $request->NIP,
+            $request->extra_info,
         );
 
         $order = $this->orderService->store($orderData);
@@ -43,27 +50,32 @@ class OrderController extends Controller
     }
 
 
-    public function show(Order $order){
+    public function show(Order $order)
+    {
         return response()->json($order);
     }
 
-    public function update(UpdateOrderRequest $request){
+    public function update(UpdateOrderRequest $request)
+    {
         throw new Exception('Checkout not made yet');
     }
 
-    public function destroy(Order $order){
+    public function destroy(Order $order)
+    {
         $order->delete();
 
         return response()->json(['message' => 'Product deleted succesfully'], 200);
     }
 
-    public function tracking(Order $order){
+    public function tracking(Order $order)
+    {
         $this->authorize('tracking', $order);
 
         return new OrderResource($order);
     }
 
-    public function trackingGuest(Order $order){
+    public function trackingGuest(Order $order)
+    {
         return new GuestOrderResource($order);
     }
 }

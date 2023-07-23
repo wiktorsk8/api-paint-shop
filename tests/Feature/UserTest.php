@@ -31,4 +31,41 @@ class UserTest extends TestCase
 
         $response->assertOk();
     }
+
+    public function test_show_method_admin(){
+        Sanctum::actingAs(User::factory()->setAdmin()->create());
+        $id = User::randomId();
+
+        $response = $this->get("api/users/{$id}");
+
+        $response->assertOk();
+    }
+
+    public function test_show_method_user_other(){
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+        $id = $user->id - 1;
+
+        $response = $this->get("api/users/{$id}");
+
+        $response->assertForbidden();
+    }
+
+    public function test_show_method_user_himself(){
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+        $id = $user->id;
+
+        $response = $this->get("api/users/{$id}");
+
+        $response->assertOk();
+    }
+
+    public function test_show_method_unauth(){
+        $id = User::randomId();
+
+        $response = $this->get("api/users/{$id}", ['Accept' => 'application/json']);
+
+        $response->assertUnauthorized();
+    }
 }

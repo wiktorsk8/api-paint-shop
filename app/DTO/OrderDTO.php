@@ -5,47 +5,66 @@ namespace App\DTO;
 class OrderDTO{
 
     public function __construct(
-        private readonly string $name,
+        private readonly array $product_id,
+        private readonly string $firstName,
+        private readonly string $lastName,
         private readonly string $email,
-        private readonly string $phone,
-        private readonly int $product_id,
+        private readonly int $phone,
         private readonly string $city,
-        private readonly string $postal_code,
-        private readonly string $street_name,
-        private readonly int $street_number,
-        private readonly ?int $flat_number,
+        private readonly string $postalCode,
+        private readonly string $streetName,
+        private readonly int $streetNumber, 
+        private readonly ?int $flatNumber,
+        private readonly ?string $companyName,
+        private readonly ?int $NIP,
+        private readonly ?string $extraInfo,
     ){}
 
-    public function getName(){
-        return $this->name;
+    public function getFirstName(): string{
+        return $this->firstName;
     }
-    public function getEmail(){
+
+    public function getLastName(): string{
+        return $this->lastName;
+    }
+
+    public function getEmail(): string{
         return $this->email;
     }
-    public function getPhone(){
+    public function getPhone(): int{
         return $this->phone;
     }
-    public function getProductId(){
+    public function getProductId(): array{
         return $this->product_id;
     }
 
-    public function getCity(){
+    public function getCity(): string{
         return $this->city;
     }
 
-    public function getPostalCode(){
-        return $this->postal_code;
+    public function getPostalCode(): string{
+        return $this->postalCode;
     }
 
-    public function getStreetName(){
-        return $this->street_name;
+    public function getStreetName(): string{
+        return $this->streetName;
     }
 
-    public function getStreetNumber(){
-        return $this->street_number;
+    public function getStreetNumber(): int{
+        return $this->streetNumber;
     }
 
     public function getFlatNumber(){
-        return $this->flat_number;
+        return $this->flatNumber;
+    }
+    public function getCompanyName(){
+        return $this->companyName;
+    }
+    public function getNIP(){
+        return $this->NIP;
+    }
+
+    public function getExtraInfo(){
+        return $this->extraInfo;
     }
 }

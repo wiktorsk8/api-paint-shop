@@ -31,17 +31,17 @@ class UserPolicy
 
     public function update(User $user, User $userToUpdate): bool
     {
-        return $user->is_admin;
-    }
-
-    public function delete(User $user, User $userToDelete): bool
-    {
         if ($user->is_admin) return true;
 
-        if ($user->id == $userToDelete->id) {
+        if ($user->id == $userToUpdate->id) {
             return true;
         }
 
         return false;
+    }
+
+    public function delete(User $user, User $userToDelete): bool
+    {
+        return $user->is_admin;
     }
 }

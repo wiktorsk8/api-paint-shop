@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true
         ]);
 
-         $this->call(AddressSeeder::class);
-         $this->call(OrderSeeder::class);
+         //$this->call(AddressSeeder::class);
+         //$this->call(OrderSeeder::class);
 
     }
 
