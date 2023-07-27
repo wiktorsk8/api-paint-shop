@@ -18,11 +18,9 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'name',
         'email',
         'password',
         'is_admin',
-        'phone',
     ];
 
     protected $hidden = [
@@ -38,5 +36,9 @@ class User extends Authenticatable
 
     public function address(){
         return $this->hasOne(Address::class);
+    }
+
+    public function details(){
+        return $this->hasOne(UserDetails::class);
     }
 }

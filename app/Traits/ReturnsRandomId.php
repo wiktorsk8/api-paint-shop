@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 trait ReturnsRandomId
 {
-    private function randomId(string $modelClass): int{
+    private function randomId(string $modelClass, string $idType = null){
         if (!is_subclass_of($modelClass, Model::class)) {
             throw new \InvalidArgumentException('Invalid model class provided.');
         }
@@ -18,6 +18,10 @@ trait ReturnsRandomId
             ->pluck('id')
             ->toArray();
 
-        return $ids[array_rand($ids)];
+        $result = $ids[array_rand($ids)];
+        
+        if ($idType == 'uuid') return $result;
+
+        return (int)$result;
     }
 }

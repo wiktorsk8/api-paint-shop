@@ -1,16 +1,16 @@
 <?php
 
-namespace Database\Factories\Order;
+namespace Database\Factories;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Traits\ReturnsRandomId;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order\Address>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OrderDetails>
  */
-class AddressFactory extends Factory
+class OrderDetailsFactory extends Factory
 {
+
     use ReturnsRandomId;
     /**
      * Define the model's default state.
@@ -20,11 +20,10 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'city' => fake()->city(),
-            'user_id' => $this->randomId(User::class),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'phone' => fake()->numberBetween(100000000,999999999),
+            'phone' => fake()->numberBetween(100000000, 200000000),
+            'city' => fake()->city(),
             'city' => fake()->city(),
             'postal_code' => fake()->postcode(),
             'street_name' => fake()->streetName(),

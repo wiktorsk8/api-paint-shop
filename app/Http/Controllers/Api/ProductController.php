@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Support\Facades\File;
@@ -41,6 +41,7 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->image = $fileName;
         $product->in_stock = $request->in_stock;
+        $product->discount = $request->discount;
         $product->save();
 
         return response(new ProductResource($product), 201);

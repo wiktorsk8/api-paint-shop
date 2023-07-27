@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Order;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,9 +12,6 @@ class Address extends Model
 
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
-        'phone',
         'city',
         'postal_code',
         'street_name',

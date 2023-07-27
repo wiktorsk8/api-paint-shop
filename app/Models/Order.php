@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Order;
+namespace App\Models;
 
 use App\Models\OrderedProduct;
 use App\Models\User;
@@ -18,20 +18,17 @@ class Order extends Model
         'orderedProducts',
     ];
     protected $fillable = [
-        'details',
+        'order_details_id',
         'user_id',
         'is_paid',
     ];
 
-    protected function details(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => json_decode($value),
-        );
-    }
-
     public function orderedProducts(){
         return $this->hasMany(OrderedProduct::class);
+    }
+
+    public function orderDetails(){
+        return $this->hasOne(OrderDetailsModel::class);
     }
 
     public function user(){

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Order;
+namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

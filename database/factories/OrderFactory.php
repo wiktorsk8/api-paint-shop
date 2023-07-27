@@ -1,12 +1,10 @@
 <?php
 
-namespace Database\Factories\Order;
+namespace Database\Factories;
 
-use App\Models\Order\Address;
-use App\Models\Product;
+use App\Models\OrderDetails;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\ReturnsRandomId;
 
 /**
@@ -23,7 +21,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'details' => ['here_will_be' => 'json_address_data'],
+            'order_details_id' => OrderDetails::factory()->create()->id,
             'user_id' => $this->randomId(User::class),
             'is_paid' => true
         ];

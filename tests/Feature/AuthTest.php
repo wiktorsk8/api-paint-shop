@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -18,7 +15,6 @@ class AuthTest extends TestCase
         $email = $this->faker->email();
 
         $response = $this->post('api/register', [
-            'name' => $this->faker->name(),
             'email' => $email,
             'password' => 'password',
             'password_confirmation' => 'password'
@@ -41,7 +37,6 @@ class AuthTest extends TestCase
         $email = $this->faker->email();
 
         $response = $this->post('api/register', [
-            'name' => $this->faker->name(),
             'email' => $email,
             'password' => 'password',
             'password_confirmation' => 'password'

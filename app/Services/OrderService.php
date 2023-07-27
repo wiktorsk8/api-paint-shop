@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Models\OrderedProduct;
-use App\Models\Order\Order;
+use App\Models\Order;
 use App\Models\Product;
 use App\DTO\OrderDTO;
-
+use App\Models\OrderDetails;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
@@ -20,7 +20,7 @@ class OrderService
         }
 
         $order = new Order();
-        $order->details = $this->fillDetails($dto);
+        $order->order_details_id = $this->createDetails($dto)->id;
         $order->user_id = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;
         $order->is_paid = true; 
         $order->save();
@@ -30,10 +30,9 @@ class OrderService
         return $order;
     }
 
-
-    private function fillDetails(OrderDTO $dto)
+    private function createDetails(OrderDTO $dto): OrderDetails
     {
-        $details = [
+        return OrderDetails::create([
             'first_name' => $dto->getFirstName(),
             'last_name' => $dto->getLastName(),
             'phone' => $dto->getPhone(),
@@ -45,9 +44,7 @@ class OrderService
             'company_name' => $dto->getCompanyName(),
             'NIP' => $dto->getNIP(),
             'extra_info' => $dto->getExtraInfo(),
-        ];
-
-        return json_encode($details);
+        ]);   
     }
 
     private function storeOrderedProducts(array $productIds, $orderId){

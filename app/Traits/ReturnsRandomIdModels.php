@@ -10,6 +10,6 @@ trait ReturnsRandomIdModels
         ->pluck('id')
         ->toArray();
 
-        return $ids[array_rand($ids)];
+        return (int)$ids[array_rand($ids)];
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
-class StoreProductRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,21 +25,21 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3'],
-            'price' => ['required'],
-            'description' => ['nullable', 'string'],
-            'image' => ['required', 'image'],
-            'in_stock' => ['required']
+            'product_id.*' => ['required', 'numeric', 'min:1', 'max:2147483647'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'email' => ['required' ,'email'],
+            'phone' => ['required', 'numeric', 'digits:9'],
+            'city' => ['required', 'string', 'min:2' , 'max:80'],
+            'postal_code' => ['required', 'digits:5'],
+            'street_name' => ['required', 'string','max:80'],
+            'street_number' => ['required', 'numeric', 'min:0'],
+            'flat_number' => ['nullable', 'numeric', 'min:0'],
+            'company_name' => ['nullable', 'string'],
+            'NIP' => ['nullable', 'numeric'],
+            'extra_info' => ['nullable', 'string']
         ];
     }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'in_stock' => true
-        ]);
-    }
-
 
     protected function failedValidation(Validator $validator)
     {

@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\DTO\OrderDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Requests\Order\UpdateOrderRequest;
-use App\Http\Resources\GuestOrderResource;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Models\Order\Order;
+use App\Models\Order;
 use App\Services\OrderService;
 use PHPUnit\Framework\Exception;
 
@@ -57,14 +56,14 @@ class OrderController extends Controller
 
     public function update(UpdateOrderRequest $request)
     {
-        throw new Exception('Checkout not made yet');
+        //
     }
 
     public function destroy(Order $order)
     {
         $order->delete();
 
-        return response()->json(['message' => 'Product deleted succesfully'], 200);
+        return response()->json(['message' => 'Order deleted succesfully'], 200);
     }
 
     public function tracking(Order $order)
@@ -76,6 +75,6 @@ class OrderController extends Controller
 
     public function trackingGuest(Order $order)
     {
-        return new GuestOrderResource($order);
+        return new OrderResource($order);
     }
 }
