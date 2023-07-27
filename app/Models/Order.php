@@ -24,11 +24,11 @@ class Order extends Model
     ];
 
     public function orderedProducts(){
-        return $this->hasMany(OrderedProduct::class);
+        return $this->hasMany(OrderedProduct::class, 'order_id');
     }
 
     public function orderDetails(){
-        return $this->hasOne(OrderDetailsModel::class);
+        return $this->belongsTo(OrderDetails::class, 'order_details_id');
     }
 
     public function user(){
