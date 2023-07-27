@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Database\Seeders\AddressSeeder;
 use Database\Seeders\OrderSeeder;
+use Database\Seeders\OrderedProductSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -19,15 +21,14 @@ class DatabaseSeeder extends Seeder
         \App\Models\Product::factory(10)->create();
 
         User::create([
-            'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('123123123'),
-            'is_admin' => true,
-            'phone' => 500400300
+            'is_admin' => true
         ]);
 
-         //$this->call(AddressSeeder::class);
-         //$this->call(OrderSeeder::class);
+        $this->call(AddressSeeder::class);
+        $this->call(OrderSeeder::class);
+        $this->call(OrderedProductSeeder::class);
 
     }
 

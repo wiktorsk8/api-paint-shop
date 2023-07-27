@@ -15,12 +15,13 @@ class Product extends Model
         'price',
         'description',
         'image',
-        'in_stock'
+        'in_stock',
+        'discount'
     ];
 
     
     public function orders(){
-        return $this->hasMany(Order::class, 'product_id');
+        return $this->hasMany(Order::class);
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Order\Order;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,8 +74,7 @@ class OrderPolicy
 
     public function tracking(User $user, Order $order): bool
     {
-        dump($user, $order);
-        if ($user->id === $order->customer_id || $user->is_admin){
+        if ($user->id === $order->user_id || $user->is_admin){
             return true;
         }
 

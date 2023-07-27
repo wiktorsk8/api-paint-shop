@@ -22,6 +22,7 @@ class ProductFactory extends Factory
             'description' => fake()->text(150),
             'image' => fake()->image(),
             'in_stock' => true,
+            'discount' => false,
         ];
     }
 }

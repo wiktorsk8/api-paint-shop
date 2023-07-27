@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('product_id');
-            $table->foreignId('customer_address_id');
-            $table->foreignId('customer_id')->nullable();
+            $table->foreignId('order_details_id');
+            $table->foreignId('user_id')->nullable();
+            $table->boolean('is_paid');
             $table->timestamps();
         });
     }

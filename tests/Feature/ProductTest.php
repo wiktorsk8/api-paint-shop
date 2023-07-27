@@ -6,9 +6,8 @@ use App\Models\Product;
 use Tests\TestCase;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Http\Testing\File;
+
 
 class ProductTest extends TestCase
 {
@@ -23,7 +22,8 @@ class ProductTest extends TestCase
             'price' => $this->faker->randomFloat(2, 1, 9999999),
             'description' => $this->faker->paragraph(2),
             'image' => $image,
-            'in_stock' => true
+            'in_stock' => true,
+            'discount' => true
         ]);
 
         $imageName = $response->decodeResponseJson()['image'];

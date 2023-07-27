@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\User\Auth\AuthController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Admin\ProductController;
-use App\Http\Controllers\Api\Admin\OrderController;
-use App\Http\Controllers\Api\User\UserController;
-use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +17,6 @@ use App\Http\Controllers\RedirectController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('/test', function () {
-    dump(\Illuminate\Support\Facades\Auth::check());
-    return 0;
-});
-
 
 // Authentication
 Route::middleware('check.auth.api')->group(function () {
@@ -58,9 +51,9 @@ Route::controller(OrderController::class)->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/orders', 'index');
         Route::get('/orders/{order}', 'show');
-        Route::put('/orders/{order}', 'update');
-        Route::delete('/orders/{order}', 'destroy');
-        Route::get('/orders/tracking/{order}', 'tracking');
+        Route::put('/orders/{order:uuid}', 'update');
+        Route::delete('/orders/{order:uuid}', 'destroy');
+        Route::get('/orders/tracking/{order:uuid}', 'tracking');
     });
 });
 
@@ -73,6 +66,15 @@ Route::controller(UserController::class)->group(function () {
         Route::delete('/users/{user}', 'destroy');
     });
 });
+
+// Address
+Route::controller(AddressController::class)->group(function(){
+    Route::middleware(['auth:sanctum'])->group(function(){
+        Route::get('/addresses/{address}', 'view');
+        Route::post('/addresses', 'store');
+    });
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
