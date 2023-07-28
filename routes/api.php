@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
@@ -50,10 +51,10 @@ Route::controller(OrderController::class)->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/orders', 'index');
-        Route::get('/orders/{order}', 'show');
-        Route::put('/orders/{order:uuid}', 'update');
-        Route::delete('/orders/{order:uuid}', 'destroy');
-        Route::get('/orders/tracking/{order:uuid}', 'tracking');
+        Route::get('/orders/{order:id}', 'show');
+        Route::put('/orders/{order:id}', 'update');
+        Route::delete('/orders/{order:id}', 'destroy');
+        Route::get('/orders/tracking/{order:id}', 'tracking');
     });
 });
 

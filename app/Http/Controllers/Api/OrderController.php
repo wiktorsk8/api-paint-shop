@@ -45,13 +45,13 @@ class OrderController extends Controller
 
         $order = $this->orderService->store($orderData);
 
-        return new OrderResource($order);
+        return response(new OrderResource($order));
     }
 
 
     public function show(Order $order)
     {
-        return response()->json($order);
+        return response(new OrderResource($order));
     }
 
     public function update(UpdateOrderRequest $request)
@@ -70,11 +70,11 @@ class OrderController extends Controller
     {
         $this->authorize('tracking', $order);
 
-        return new OrderResource($order);
+        return response(new OrderResource($order));
     }
 
     public function trackingGuest(Order $order)
     {
-        return new OrderResource($order);
+        return response(new OrderResource($order));
     }
 }
