@@ -54,7 +54,7 @@ Route::controller(OrderController::class)->group(function () {
         Route::get('/orders/{order:id}', 'show');
         Route::put('/orders/{order:id}', 'update');
         Route::delete('/orders/{order:id}', 'destroy');
-        Route::get('/orders/tracking/{order:id}', 'tracking');
+        Route::get('/orders/tracking/{id}', 'tracking');
     });
 });
 

@@ -54,10 +54,12 @@ class OrderController extends Controller
         return response(new OrderResource($order));
     }
 
-    public function update(UpdateOrderRequest $request)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
-    }
+        $updatedOrder = $this->orderService->update($request, $order);
+
+        return response(new OrderResource($updatedOrder));
+    }  
 
     public function destroy(Order $order)
     {
@@ -66,11 +68,11 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order deleted succesfully'], 200);
     }
 
-    public function tracking(Order $order)
+    public function tracking($id)
     {
-        $this->authorize('tracking', $order);
+        $orders = Order::where('user_id', '=', $id)->get();
 
-        return response(new OrderResource($order));
+        return response(OrderResource::collection($orders));
     }
 
     public function trackingGuest(Order $order)

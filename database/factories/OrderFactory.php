@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStateEnum;
 use App\Models\OrderDetails;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,7 @@ class OrderFactory extends Factory
         return [
             'order_details_id' => OrderDetails::factory()->create()->id,
             'user_id' => $this->randomId(User::class),
+            'state' => OrderStateEnum::randomValue(),
             'is_paid' => true
         ];
     }
