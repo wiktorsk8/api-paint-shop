@@ -60,6 +60,6 @@ class AuthController extends Controller
     public function checkAuth(){
          /** @var User $user */
          
-        return response()->json(['is_user_auth' => Auth::guard('api')->check()], 200);
+        return response()->json(['isUserAuth' => Auth::guard('api')->check()], 200);
     }
 }
