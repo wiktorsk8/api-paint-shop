@@ -54,12 +54,12 @@ class AuthController extends Controller
             $user->currentAccessToken()->delete();
         }
 
-        return response('logged out!');
+        return response(['message' => 'logged out!']);
     }
 
     public function checkAuth(){
          /** @var User $user */
          
-        return response(['is_user_auth' => Auth::guard('api')->check()], 200);
+        return response()->json(['is_user_auth' => Auth::guard('api')->check()], 200);
     }
 }
