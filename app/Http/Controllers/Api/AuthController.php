@@ -52,9 +52,10 @@ class AuthController extends Controller
         $user = Auth::user();
         if ($user){
             $user->currentAccessToken()->delete();
+            return true;
         }
 
-        return response('logged out!');
+        return false;
     }
 
     public function checkAuth(){
