@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStateEnum;
 use App\Models\OrderedProduct;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -21,6 +22,11 @@ class Order extends Model
         'order_details_id',
         'user_id',
         'is_paid',
+    ];
+
+    protected $cast = [
+        'is_paid' => 'boolean',
+        'state' => OrderStateEnum::class
     ];
 
     public function orderedProducts(){

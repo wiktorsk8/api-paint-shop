@@ -54,10 +54,12 @@ class OrderController extends Controller
         return response(new OrderResource($order));
     }
 
-    public function update(UpdateOrderRequest $request)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
-    }
+        $updatedOrder = $this->orderService->update($request, $order);
+
+        return response(new OrderResource($updatedOrder));
+    }  
 
     public function destroy(Order $order)
     {
@@ -70,7 +72,7 @@ class OrderController extends Controller
     {
         $orders = Order::where('user_id', '=', $id)->get();
 
-        return OrderResource::collection($orders);
+        return response(OrderResource::collection($orders));
     }
 
     public function trackingGuest(Order $order)

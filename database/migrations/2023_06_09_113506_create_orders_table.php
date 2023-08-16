@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('order_details_id');
             $table->foreignId('user_id')->nullable();
             $table->boolean('is_paid');
+            $table->string('state');
             $table->timestamps();
         });
     }

@@ -6,6 +6,9 @@ use App\Models\OrderedProduct;
 use App\Models\Order;
 use App\Models\Product;
 use App\DTO\OrderDTO;
+use App\Enums\OrderStateEnum;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\OrderDetails;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,10 +25,18 @@ class OrderService
         $order = new Order();
         $order->order_details_id = $this->createDetails($dto)->id;
         $order->user_id = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;
-        $order->is_paid = true; 
+        $order->is_paid = true;
+        $order->state = OrderStateEnum::Placed; 
         $order->save();
 
         $this->storeOrderedProducts($dto->getProductId(), $order->id);
+
+        return $order;
+    }
+
+    public function update(UpdateOrderRequest $request, Order $order): Order{
+        $orderDetails = OrderDetails::where('id', '=', $order->order_details_id);
+        $orderDetails->update($request->validated());
 
         return $order;
     }
