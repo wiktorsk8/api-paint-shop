@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request)
+    {
 
         $user = User::create([
             'name' => $request->name,
@@ -23,43 +24,46 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
-        return response([
+        return response()->json([
             'token' => $token,
             'user' => $user
         ], 201);
     }
 
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         $credentials = $request->validated();
 
         if (auth()->attempt($credentials)) {
-            
+
             /** @var User $user */
             $user = Auth::user();
             $token = $user->createToken('auth-token')->plainTextToken;
 
-            return response([
+            return response()->json([
                 'token' => $token,
                 'user' => $user
             ], 200);
         } else {
-            return response(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
 
-    public function logout(){
-        /** @var User $user */ 
+    public function logout()
+    {
+        /** @var User $user */
         $user = Auth::user();
-        if ($user){
+        if ($user) {
             $user->currentAccessToken()->delete();
         }
 
-        return response('logged out!');
+        return response()->json(['message' => 'logged_out'], 200);
     }
 
-    public function checkAuth(){
-         /** @var User $user */
-         
-        return response(['is_user_auth' => Auth::guard('api')->check()], 200);
+    public function checkAuth()
+    {
+        /** @var User $user */
+
+        return response()->json(['is_user_auth' => Auth::guard('api')->check()], 200);
     }
 }
