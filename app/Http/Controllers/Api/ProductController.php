@@ -32,6 +32,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        
         if (!$request->hasFile('image')){
             throw new Exception('Image file not found in request.');
         }
@@ -41,14 +42,13 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
-        $product->price = (float)$request->price;
+        $product->base_price = (float)$request->price;
         $product->description = $request->description;
         $product->image = $fileName;
         $product->in_stock = $request->in_stock;
-        $product->discount = $request->discount;
         $product->save();
 
-        return response(new ProductResource($product), 201);
+        return new ProductResource($product);
 
     }
 

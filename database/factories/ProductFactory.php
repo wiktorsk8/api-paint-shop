@@ -16,17 +16,13 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $basePrice = fake()->randomFloat(2, 0, 99999);
-        $discount = fake()->numberBetween(0, 99);
-        $discountedPrice = $basePrice * (1 - $discount/100);
         return [
             'name' => fake()->name(),
-            'base_price' => $basePrice,
+            'base_price' => fake()->randomFloat(2, 0, 99999),
             'description' => fake()->text(150),
             'image' => fake()->image(),
             'in_stock' => true,
-            'discount' => $discount,
-            'discounted_price' => $discountedPrice
+
         ];
     }
 }

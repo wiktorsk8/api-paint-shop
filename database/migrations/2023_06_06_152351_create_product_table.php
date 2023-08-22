@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('description');
             $table->string('image');
             $table->boolean('in_stock');
-            $table->integer('discount');
-            $table->double('discounted_price', 15, 2);
             $table->timestamps();
         });
     }

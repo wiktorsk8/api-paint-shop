@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveShippingInfoRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        protected UserService $userService)
     {
         $this->authorizeResource(User::class, 'user');
     }
 
     // Only as admin
     public function index(){
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::paginate());
     }
 
     // Only as admin or user can view himself
@@ -36,6 +40,15 @@ class UserController extends Controller
         $id = $user->id;
         $user->delete();
 
-        return response(['message' => "User (id: {$id}) deleted succesfully"], 200);
+        return response()->json(['message' => "User (id: {$id}) deleted succesfully"], 200);
+    }
+
+    // Only user
+    public function saveShippingInfo(SaveShippingInfoRequest $request, User $user){
+        $this->authorize('saveShippingInfo', $user);
+
+        $savedUser = $this->userService->saveShippingInfo($request);
+
+        return new UserResource($savedUser);
     }
 }
