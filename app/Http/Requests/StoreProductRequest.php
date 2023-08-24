@@ -29,6 +29,9 @@ class StoreProductRequest extends FormRequest
             'base_price' => ['required'],
             'description' => ['nullable', 'string'],
             'image' => ['required', 'image'],
+            'year' => ['required', 'numeric'],
+            'technique' => ['required', 'string'],
+            'size' => ['required', 'string'],
             'in_stock' => ['required'],
         ];
     }

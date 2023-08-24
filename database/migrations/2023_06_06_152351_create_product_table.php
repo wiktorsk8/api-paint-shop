@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->double('base_price', 15, 2);
             $table->string('description');
+            $table->string('size');
+            $table->integer('year');
             $table->string('image');
+            $table->string('technique');
             $table->boolean('in_stock');
             $table->timestamps();
         });

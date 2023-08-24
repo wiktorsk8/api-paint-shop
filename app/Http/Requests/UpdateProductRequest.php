@@ -28,7 +28,10 @@ class UpdateProductRequest extends FormRequest
             'price' => ['nullable'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image'],
-            'in_stock' => ['nullable', 'boolean']
+            'in_stock' => ['nullable', 'boolean'],
+            'year' => ['nullable', 'numeric'],
+            'technique' => ['nullable', 'string'],
+            'size' => ['nullable', 'string'],
         ];
         
     }
