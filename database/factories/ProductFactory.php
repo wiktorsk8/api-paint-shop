@@ -18,11 +18,11 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'price' => fake()->randomFloat(2, 0, 99999),
+            'base_price' => fake()->randomFloat(2, 0, 99999),
             'description' => fake()->text(150),
             'image' => fake()->image(),
             'in_stock' => true,
-            'discount' => false,
+
         ];
     }
 }

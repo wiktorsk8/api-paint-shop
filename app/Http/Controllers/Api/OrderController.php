@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DTO\OrderDTO;
+use App\DTO\UserInfoDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -22,13 +22,15 @@ class OrderController extends Controller
 
     public function index()
     {
-        return response()->json(Order::all());
+        return Order::all();
     }
 
     public function store(StoreOrderRequest $request)
     {
-        $orderData = new OrderDTO(
-            $request->product_id,
+        (array)$product_ids = $request->product_id;
+
+        $orderData = new UserInfoDTO(
+
             $request->first_name,
             $request->last_name,
             $request->email,
@@ -43,23 +45,23 @@ class OrderController extends Controller
             $request->extra_info,
         );
 
-        $order = $this->orderService->store($orderData);
+        $order = $this->orderService->store($orderData, $product_ids);
 
-        return response(new OrderResource($order));
+        return new OrderResource($order);
     }
 
 
     public function show(Order $order)
     {
-        return response(new OrderResource($order));
+        return new OrderResource($order);
     }
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $updatedOrder = $this->orderService->update($request, $order);
 
-        return response(new OrderResource($updatedOrder));
-    }  
+        return new OrderResource($updatedOrder);
+    }
 
     public function destroy(Order $order)
     {
@@ -72,11 +74,13 @@ class OrderController extends Controller
     {
         $orders = Order::where('user_id', '=', $id)->get();
 
-        return response(OrderResource::collection($orders));
+        return OrderResource::collection($orders);
     }
 
     public function trackingGuest(Order $order)
     {
-        return response(new OrderResource($order));
+        $this->authorize('trackingGuest', $order);
+
+        return new OrderResource($order);
     }
 }

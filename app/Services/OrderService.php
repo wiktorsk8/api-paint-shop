@@ -6,6 +6,7 @@ use App\Models\OrderedProduct;
 use App\Models\Order;
 use App\Models\Product;
 use App\DTO\OrderDTO;
+use App\DTO\UserInfoDTO;
 use App\Enums\OrderStateEnum;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
-    public function store(OrderDTO $dto): Order
+    public function store(UserInfoDTO $dto, array $product_ids): Order
     {
-        foreach ($dto->getProductId() as $id) {
+        foreach ($product_ids as $id) {
             $product = Product::findOrFail($id);
 
             if (!$product->in_stock) throw new \Exception('Product not in stock!');
@@ -29,7 +30,7 @@ class OrderService
         $order->state = OrderStateEnum::Placed; 
         $order->save();
 
-        $this->storeOrderedProducts($dto->getProductId(), $order->id);
+        $this->storeOrderedProducts($product_ids, $order->id);
 
         return $order;
     }
@@ -41,7 +42,7 @@ class OrderService
         return $order;
     }
 
-    private function createDetails(OrderDTO $dto): OrderDetails
+    private function createDetails(UserInfoDTO $dto): OrderDetails
     {
         return OrderDetails::create([
             'first_name' => $dto->getFirstName(),

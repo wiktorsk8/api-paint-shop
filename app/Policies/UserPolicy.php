@@ -44,4 +44,12 @@ class UserPolicy
     {
         return $user->is_admin;
     }
+
+    public function saveShippingInfo(User $user, User $userToUpdate): bool{
+        if ($user->id == $userToUpdate->id) {
+            return true;
+        }
+
+        return false;
+    }
 }

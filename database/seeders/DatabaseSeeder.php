@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123123123'),
             'is_admin' => true
         ]);
-
+        
         $this->call(AddressSeeder::class);
         $this->call(OrderSeeder::class);
         $this->call(OrderedProductSeeder::class);

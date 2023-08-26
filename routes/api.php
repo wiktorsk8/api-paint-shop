@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('/check-auth', [AuthController::class, 'checkAuth']);
 
-
 // Products
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index');
@@ -43,7 +43,6 @@ Route::controller(ProductController::class)->group(function () {
     });
 });
 
-
 // Orders
 Route::controller(OrderController::class)->group(function () {
     Route::post('/orders', 'store');
@@ -51,9 +50,9 @@ Route::controller(OrderController::class)->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/orders', 'index');
-        Route::get('/orders/{order:id}', 'show');
-        Route::put('/orders/{order:id}', 'update');
-        Route::delete('/orders/{order:id}', 'destroy');
+        Route::get('/orders/{order}', 'show');
+        Route::put('/orders/{order}', 'update');
+        Route::delete('/orders/{order}', 'destroy');
         Route::get('/orders/tracking/{id}', 'tracking');
     });
 });
@@ -65,12 +64,13 @@ Route::controller(UserController::class)->group(function () {
         Route::get('/users/{user}', 'show');
         Route::put('/users/{user}', 'update');
         Route::delete('/users/{user}', 'destroy');
+        Route::post('/users/save-shipping-info/{user}', 'saveShippingInfo');
     });
 });
 
 // Address
-Route::controller(AddressController::class)->group(function(){
-    Route::middleware(['auth:sanctum'])->group(function(){
+Route::controller(AddressController::class)->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/addresses/{address}', 'view');
         Route::post('/addresses', 'store');
     });

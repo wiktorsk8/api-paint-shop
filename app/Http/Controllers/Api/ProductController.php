@@ -7,15 +7,19 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Mockery\Exception;
 
 class ProductController extends Controller
 {
-    public function __construct()
+    protected $productService;
+    public function __construct(ProductService $productService)
     {
         $this->authorizeResource(Product::class, 'product');
+        $this->productService = $productService;
     }
 
     public function index()
@@ -28,6 +32,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        
         if (!$request->hasFile('image')){
             throw new Exception('Image file not found in request.');
         }
@@ -37,14 +42,13 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
-        $product->price = (float)$request->price;
+        $product->base_price = (float)$request->price;
         $product->description = $request->description;
         $product->image = $fileName;
         $product->in_stock = $request->in_stock;
-        $product->discount = $request->discount;
         $product->save();
 
-        return response(new ProductResource($product), 201);
+        return new ProductResource($product);
 
     }
 
@@ -94,5 +98,17 @@ class ProductController extends Controller
         $product->delete();
 
         return response(['message' => 'Product deleted succesfully'], 200);
+    }
+
+    public function applyDiscount(Product $product, Request $request){
+        $this->productService->applyDiscountPrecentage($product, $request->discount);
+
+        return response(["message" => "Discount applied succesfully to product with id: {$product->id}"], 200);
+    }
+
+    public function deleteDiscount(Product $product){
+        $this->productService->deleteDiscount($product);
+
+        return response(['message' => "Discount deleted successfully from product id: {$product->id}"], 200);
     }
 }

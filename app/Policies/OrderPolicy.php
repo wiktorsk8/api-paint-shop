@@ -80,7 +80,7 @@ class OrderPolicy
         return $user->is_admin;
     }
 
-    public function tracking(User $user, Order $order): bool
+    public function trackingGuest(User $user, Order $order): bool
     {
         if ($user->id === $order->user_id || $user->is_admin){
             return true;

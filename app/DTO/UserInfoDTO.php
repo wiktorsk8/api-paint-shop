@@ -2,10 +2,9 @@
 
 namespace App\DTO;
 
-class OrderDTO{
+class UserInfoDTO{
 
     public function __construct(
-        private readonly array $product_id,
         private readonly string $firstName,
         private readonly string $lastName,
         private readonly string $email,
@@ -33,9 +32,6 @@ class OrderDTO{
     }
     public function getPhone(): int{
         return $this->phone;
-    }
-    public function getProductId(): array{
-        return $this->product_id;
     }
 
     public function getCity(): string{
