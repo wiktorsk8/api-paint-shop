@@ -32,7 +32,7 @@ return [
     ],
 
     'stripe' => [
-        'secret' => env("STRIPE_API_SECRET")
+        'secret-test' => env("STRIPE_API_SECRET")
     ]
 
 ];
