@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 
-class StoreProductRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,21 +24,10 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3'],
-            'base_price' => ['required'],
-            'description' => ['nullable', 'string'],
-            'image' => ['required', 'image'],
-            'in_stock' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed']
         ];
     }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'in_stock' => true
-        ]);
-    }
-
 
     protected function failedValidation(Validator $validator)
     {
@@ -47,5 +35,15 @@ class StoreProductRequest extends FormRequest
             'message' => 'Validation failed',
             'errors' => $validator->errors(),
         ], 422));
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'A name is required',
+            'email.required' => 'A email is required',
+            'password.required' => 'A password is required',
+            'email.unique' => 'Email already in use'
+        ];
     }
 }

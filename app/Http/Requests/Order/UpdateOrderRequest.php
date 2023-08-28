@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAddressRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,14 @@ class StoreAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'email' => ['required' ,'email'],
-            'phone' => ['required', 'numeric', 'digits:9'],
-            'city' => ['required', 'string', 'min:2' , 'max:80'],
-            'postal_code' => ['required', 'digits:5'],
-            'street_name' => ['required', 'string','max:80'],
-            'street_number' => ['required', 'numeric', 'min:0'],
+            'first_name' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
+            'email' => ['nullable' ,'email'],
+            'phone' => ['nullable', 'numeric', 'digits:9'],
+            'city' => ['nullable', 'string', 'min:2' , 'max:80'],
+            'postal_code' => ['nullable', 'digits:5'],
+            'street_name' => ['nullable', 'string','max:80'],
+            'street_number' => ['nullable', 'numeric', 'min:0'],
             'flat_number' => ['nullable', 'numeric', 'min:0'],
             'company_name' => ['nullable', 'string'],
             'NIP' => ['nullable', 'numeric'],

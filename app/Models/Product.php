@@ -15,7 +15,10 @@ class Product extends Model
         'base_price',
         'description',
         'image',
+        'size',
         'in_stock',
+        'year',
+        'technique'
     ];
 
     

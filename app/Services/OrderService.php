@@ -8,8 +8,7 @@ use App\Models\Product;
 use App\DTO\OrderDTO;
 use App\DTO\UserInfoDTO;
 use App\Enums\OrderStateEnum;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Models\OrderDetails;
 use Illuminate\Support\Facades\Auth;
 

@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\DTO\UserInfoDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\Order\StoreOrderRequest;
+use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\PaymentsService;
 
 
 class OrderController extends Controller
@@ -47,8 +48,13 @@ class OrderController extends Controller
 
         $order = $this->orderService->store($orderData, $product_ids);
 
-        return new OrderResource($order);
-    }
+        $paymentService = new PaymentsService();
+        $clientSecret = $paymentService->create($product_ids);
+
+        $orderResource = new OrderResource($order);
+
+        return array_merge($orderResource->resolve(), $clientSecret);
+    }   
 
 
     public function show(Order $order)
