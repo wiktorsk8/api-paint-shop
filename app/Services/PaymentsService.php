@@ -34,6 +34,7 @@ class PaymentsService
 
         return [
             'clientSecret' => $intent->client_secret,
+            'paymentIntentId' => $intent->id
         ];
     }
 
@@ -43,14 +44,13 @@ class PaymentsService
             $paymentIntent = $this->stripe->paymentIntents->create([
                 'amount' => $amount,
                 'currency' => 'pln',
-                'idempotency_key' => $this->idempotencyKey,
                 // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
                 'payment_method' => 'pm_card_visa'
             ]);
 
             return $paymentIntent;
-        } catch (Exception) {
-            throw new Exception("Something went wrong in createIntent() method");
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
     }
 
@@ -63,8 +63,8 @@ class PaymentsService
             );
 
             return $this->stripe->paymentIntents->retrieve($intentId);
-        } catch (Exception) {
-            throw new Exception("Something went wrong in createIntent() method");
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
     }
 
