@@ -76,6 +76,14 @@ Route::controller(AddressController::class)->group(function () {
     });
 });
 
+// Payment
+Route::controller(PaymentController::class)->group(function () {
+});
+
+// Cart
+Route::get('/create-cart', function () {
+    return response()->json(["cart_id" => uniqid("cart_id", true)], 200);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
