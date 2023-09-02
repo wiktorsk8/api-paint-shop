@@ -78,6 +78,7 @@ Route::controller(AddressController::class)->group(function () {
 
 // Payment
 Route::controller(PaymentController::class)->group(function () {
+    Route::post('/process-payment', 'process');
 });
 
 // Cart
