@@ -16,7 +16,7 @@ class WebhookController extends Controller
             $event = \Stripe\Webhook::constructEvent(
                 $request->getContent(), 
                 $request->header("Stripe-Signature"), 
-                "whsec_8836139a5d18a43d9a12b4696de32dab1894b7a866070b5100f82f6a0ac1244d"
+                ""
             );
         } catch (\UnexpectedValueException $e) {
             return response()->json([
