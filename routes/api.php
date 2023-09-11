@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\CartController;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Api\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,12 +81,17 @@ Route::controller(AddressController::class)->group(function () {
 
 // Payment
 Route::controller(PaymentController::class)->group(function () {
-    Route::post('/process-payment', 'process');
+    Route::post('/payment', 'process');
 });
 
 // Cart
-Route::get('/create-cart', function () {
-    return response()->json(["cart_id" => uniqid("cart_id", true)], 200);
+Route::get('/create-cart', [CartController::class, 'create']);
+
+Route::post('/webhook', [WebhookController::class, 'trigger']);
+
+
+Route::post('/endpoint', function(Request $request){
+    dd($request->all(), json_encode($request->all()));
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

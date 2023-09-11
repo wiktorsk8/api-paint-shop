@@ -30,7 +30,7 @@ class OrderController extends Controller
     {
         (array)$product_ids = $request->product_id;
 
-        $orderData = new UserInfoDTO(
+        $dto = new UserInfoDTO(
 
             $request->first_name,
             $request->last_name,
@@ -46,14 +46,11 @@ class OrderController extends Controller
             $request->extra_info,
         );
 
-        $order = $this->orderService->store($orderData, $product_ids);
-
-        $paymentService = new PaymentsService();
-        $clientSecret = $paymentService->create($product_ids);
+        $order = $this->orderService->store($dto, $product_ids);
 
         $orderResource = new OrderResource($order);
 
-        return array_merge($orderResource->resolve(), $clientSecret);
+        return $orderResource;
     }   
 
 

@@ -34,7 +34,6 @@ class PaymentsService
 
         return [
             'clientSecret' => $intent->client_secret,
-            'paymentIntentId' => $intent->id
         ];
     }
 
@@ -46,6 +45,8 @@ class PaymentsService
                 'currency' => 'pln',
                 // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
                 'payment_method' => 'pm_card_visa'
+            ], [
+                'idempotency_key' => $this->idempotencyKey,
             ]);
 
             return $paymentIntent;
@@ -63,8 +64,8 @@ class PaymentsService
             );
 
             return $this->stripe->paymentIntents->retrieve($intentId);
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } catch (Exception) {
+            throw new Exception("Something went wrong in updateIntent() method");
         }
     }
 

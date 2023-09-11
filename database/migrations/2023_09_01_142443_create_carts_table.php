@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->uuid();
-            $table->string('payment_intent_id')->unique();
+            $table->uuid('id')->primary();
+            $table->string('payment_intent_id')->nullable();
             $table->timestamps();
         });
     }
