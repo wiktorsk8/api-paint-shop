@@ -47,7 +47,7 @@ class UserController extends Controller
     public function saveShippingInfo(SaveShippingInfoRequest $request, User $user){
         $this->authorize('saveShippingInfo', $user);
 
-        $savedUser = $this->userService->saveShippingInfo($request);
+        $savedUser = $this->userService->saveUserShippingInfo($request);
 
         return new UserResource($savedUser);
     }

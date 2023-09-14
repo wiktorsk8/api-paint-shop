@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Events\PaymentEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\PaymentIntentRequest;
-use App\Services\PaymentsService;
+use App\Services\Stripe\PaymentsService;
 use Illuminate\Http\Request;
 
 

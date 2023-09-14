@@ -23,6 +23,8 @@ class UserDetailsFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'phone' => fake()->numberBetween(100000000, 200000000),
+            'company_name' => fake()->company(),
+            'NIP' => 1234567890
         ];
     }
 }

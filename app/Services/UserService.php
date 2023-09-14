@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\DTO\UserInfoDTO;
-use App\Http\Requests\SaveShippingInfoRequest;
+use App\Http\Requests\User\SaveShippingInfoRequest;
 use App\Models\Address;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ class UserService
 {
     protected User $user;
 
-    public function saveShippingInfo(SaveShippingInfoRequest $request)
+    public function saveUserShippingInfo(SaveShippingInfoRequest $request)
     {
         $this->user = Auth::user();
         $dto = new UserInfoDTO(

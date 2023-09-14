@@ -21,11 +21,12 @@ class Order extends Model
     protected $fillable = [
         'order_details_id',
         'user_id',
-        'is_paid',
+        'state',
+        "payment_method",
+        "delivery_method"
     ];
 
     protected $cast = [
-        'is_paid' => 'boolean',
         'state' => OrderStateEnum::class
     ];
 

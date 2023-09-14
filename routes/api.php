@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\CartController;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Api\WebhookController;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,8 @@ Route::controller(ProductController::class)->group(function () {
 Route::controller(OrderController::class)->group(function () {
     Route::post('/orders', 'store');
     Route::get('/orders/tracking', 'trackingGuest');
+    Route::post('/orders/pending-order-data', 'savePendingOrderData');
+    
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/orders', 'index');
@@ -90,9 +94,6 @@ Route::get('/create-cart', [CartController::class, 'create']);
 Route::post('/webhook', [WebhookController::class, 'trigger']);
 
 
-Route::post('/endpoint', function(Request $request){
-    dd($request->all(), json_encode($request->all()));
-});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

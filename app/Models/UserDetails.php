@@ -13,7 +13,9 @@ class UserDetails extends Model
         'user_id',
         'first_name',
         'last_name',
-        'phone'
+        'phone',
+        'company_name',
+        'NIP'
     ];
 
     public function details(){

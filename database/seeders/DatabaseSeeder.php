@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AddressSeeder::class);
         $this->call(OrderSeeder::class);
         $this->call(OrderedProductSeeder::class);
-
+        \App\Models\UserDetails::factory(5)->create();
     }
 
 }

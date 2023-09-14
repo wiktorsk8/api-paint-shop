@@ -22,13 +22,10 @@ class AddressFactory extends Factory
         return [
             'city' => fake()->city(),
             'user_id' => $this->randomId(User::class),
-            'city' => fake()->city(),
+            'street' => fake()->streetName(),
             'postal_code' => fake()->postcode(),
-            'street_name' => fake()->streetName(),
-            'street_number' => fake()->numberBetween(1, 100),
-            'flat_number' => fake()->numberBetween(1, 1000),
-            'company_name' => fake()->company(),
-            'NIP' => fake()->numberBetween(10000000000, 200000000),
+            'building_number' => fake()->streetName(),
+            'country_code' => fake()->countryCode(),
             'extra_info' => fake()->text(100),
         ];
     }

@@ -9,13 +9,5 @@ use App\Models\Address;
 
 class AddressController extends Controller
 {
-    public function view(Address $address){
-        return new AddressResource($address);
-    }
-
-    public function store(StoreAddressRequest $request){
-        $address = Address::create($request->validated());
-
-        return new AddressResource($address);
-    }
+    
 }

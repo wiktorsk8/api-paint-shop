@@ -25,7 +25,8 @@ class OrderFactory extends Factory
             'order_details_id' => OrderDetails::factory()->create()->id,
             'user_id' => $this->randomId(User::class),
             'state' => OrderStateEnum::randomValue(),
-            'is_paid' => true
+            'payment_method' => "visa/twojastara/bitkojn",
+            'delivery_method' => "Inpost"
         ];
     }
 

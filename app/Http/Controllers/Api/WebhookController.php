@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\OrderPlacementJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +17,7 @@ class WebhookController extends Controller
             $event = \Stripe\Webhook::constructEvent(
                 $request->getContent(), 
                 $request->header("Stripe-Signature"), 
-                "whsec_8836139a5d18a43d9a12b4696de32dab1894b7a866070b5100f82f6a0ac1244d"
+                config('services.stripe.webhook-secret')
             );
         } catch (\UnexpectedValueException $e) {
             return response()->json([
@@ -28,6 +29,10 @@ class WebhookController extends Controller
                 ,400);
         }
 
+        
+        OrderPlacementJob::dispatch($event->data->object->id);
+        
+        
 
         return response()->json($request, 200);
     }

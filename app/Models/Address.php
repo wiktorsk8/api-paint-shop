@@ -12,14 +12,12 @@ class Address extends Model
 
     protected $fillable = [
         'user_id',
+        'street',
+        'building_number',
         'city',
         'postal_code',
-        'street_name',
-        'street_number',
-        'flat_number',
-        'company_name',
-        'NIP',
-        'extra_info'
+        'country_code',
+        'extra_info',
     ];
 
     public function user(){

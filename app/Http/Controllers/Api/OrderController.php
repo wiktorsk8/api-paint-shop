@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\DTO\UserInfoDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\SavePendingOrderData;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\PendingOrderData;
 use App\Services\OrderService;
-use App\Services\PaymentsService;
-
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     protected $orderService;
+
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
@@ -28,29 +30,7 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request)
     {
-        (array)$product_ids = $request->product_id;
-
-        $dto = new UserInfoDTO(
-
-            $request->first_name,
-            $request->last_name,
-            $request->email,
-            $request->phone,
-            $request->city,
-            $request->postal_code,
-            $request->street_name,
-            $request->street_number,
-            $request->flat_number,
-            $request->company_name,
-            $request->NIP,
-            $request->extra_info,
-        );
-
-        $order = $this->orderService->store($dto, $product_ids);
-
-        $orderResource = new OrderResource($order);
-
-        return $orderResource;
+        
     }   
 
 
@@ -85,5 +65,17 @@ class OrderController extends Controller
         $this->authorize('trackingGuest', $order);
 
         return new OrderResource($order);
+    }
+
+    public function savePendingOrderData(SavePendingOrderData $request){
+        $id = $request->paymentIntentId;
+        $data = array_filter($request->validated(),function($key){
+            return $key !== 'payment_intent_id';
+        }, ARRAY_FILTER_USE_KEY);
+
+        PendingOrderData::create([
+            'payment_intent_id' => $id,
+            'data' => $data
+        ]);
     }
 }

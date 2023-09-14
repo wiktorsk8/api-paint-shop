@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Stripe;
 
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Stripe\PaymentIntent;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\Log;
 
 class PaymentsService
 {
@@ -24,6 +25,7 @@ class PaymentsService
 
         if ($paymentIntentId == null) {
             $intent = $this->createIntent($this->calculateAmount($products));
+
             return [
                 'clientSecret' => $intent->client_secret,
                 'paymentIntentId' => $intent->id
@@ -37,21 +39,25 @@ class PaymentsService
         ];
     }
 
-    private function createIntent($amount)
+    private function createIntent(int $amount)
     {
         try {
-            $paymentIntent = $this->stripe->paymentIntents->create([
-                'amount' => $amount,
-                'currency' => 'pln',
-                // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-                'payment_method' => 'pm_card_visa'
-            ], [
-                'idempotency_key' => $this->idempotencyKey,
-            ]);
+            $paymentIntent = $this->stripe->paymentIntents->create(
+                [
+                    'amount' => $amount,
+                    'currency' => 'pln',
+                    // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+                    'payment_method' => 'pm_card_visa',
+                    
+                ],
+                [
+                    'idempotency_key' => $this->idempotencyKey
+                ]
+            );
 
             return $paymentIntent;
         } catch (Exception $e) {
-            dd($e->getMessage());
+            throw new Exception("Something went wrong with creating an intent. ". $e->getMessage());
         }
     }
 
@@ -69,7 +75,7 @@ class PaymentsService
         }
     }
 
-    private function calculateAmount(array $products)
+    private function calculateAmount(array $products): int
     {
         $totalAmount = 0;
         foreach ($products as $product) {
