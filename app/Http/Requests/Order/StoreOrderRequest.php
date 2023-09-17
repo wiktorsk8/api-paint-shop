@@ -26,7 +26,6 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'productId' => ['required', 'numeric', 'min:1', 'max:2147483647'],
-            'cartId' => 'required',
             'paymentIntentId' => 'required',
             'save' => 'required|boolean',
             'userData.credentials.firstName' => 'required',
