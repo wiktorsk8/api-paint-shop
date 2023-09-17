@@ -60,7 +60,7 @@ class OrderController extends Controller
             $addressDTO,
             $collection->get('paymentMethod'),
             $collection->get('deliveryMethod'),
-            $collection->get('productIds'),
+            $collection->get('productId'),
             $collection->get('paymentIntentId')
         );
 
