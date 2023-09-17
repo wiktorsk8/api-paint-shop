@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('order_details_id');
             $table->foreignId('user_id')->nullable();
             $table->string('state');
-            $table->string("payment_method");
-            $table->string("delivery_method");
+            $table->string('payment_method');
+            $table->string('delivery_method');
+            $table->string('payment_intent_id');
             $table->timestamps();
         });
     }

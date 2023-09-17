@@ -12,7 +12,8 @@ class OrderDTO{
         private readonly AddressDTO $addressDTO,
         private readonly string $paymentMethod,
         private readonly string $deliveryMethod,
-        private readonly array $productIds
+        private readonly array $productIds,
+        private readonly string $paymentIntentId
     ){}
 
     public function getUserDTO(): UserDetailsDTO{
@@ -33,5 +34,9 @@ class OrderDTO{
 
     public function getProductIds(): array {
         return $this->productIds;
+    }
+
+    public function getPaymentIntentId(): string {
+        return $this->paymentIntentId;
     }
 }

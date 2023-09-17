@@ -42,13 +42,4 @@ class UserController extends Controller
 
         return response()->json(['message' => "User (id: {$id}) deleted succesfully"], 200);
     }
-
-    // Only user
-    public function saveShippingInfo(SaveShippingInfoRequest $request, User $user){
-        $this->authorize('saveShippingInfo', $user);
-
-        $savedUser = $this->userService->saveUserShippingInfo($request);
-
-        return new UserResource($savedUser);
-    }
 }

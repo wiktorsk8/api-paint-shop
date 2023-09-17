@@ -3,7 +3,8 @@
 namespace App\Enums;
 
 enum OrderStateEnum: string {
-    case Placed = 'placed';
+    case NotPaid = "notPaid";
+    case Paid = 'paid';
     case Preparation = 'preparation';
     case Delivery = 'delivery';
     case Delivered = 'delivered';

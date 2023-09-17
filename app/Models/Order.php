@@ -22,8 +22,9 @@ class Order extends Model
         'order_details_id',
         'user_id',
         'state',
-        "payment_method",
-        "delivery_method"
+        'payment_method',
+        'delivery_method',
+        'payment_intent_id'
     ];
 
     protected $cast = [

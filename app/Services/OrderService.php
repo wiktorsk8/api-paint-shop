@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
+    private OrderDTO $orderDTO;
+
     public function store(OrderDTO $orderDTO): Order
     {
         foreach ($orderDTO->getProductIds() as $id) {
@@ -23,28 +25,28 @@ class OrderService
             if (!$product->in_stock) throw new \Exception('Product not in stock!');
         }
 
+        $this->orderDTO = $orderDTO;
+
+        $order = $this->storeOrder();
+        $this->storeOrderedProducts($this->orderDTO->getProductIds(), $order->id);
+
+        return $order;
+    }
+
+    private function storeOrder(): Order {
         $order = new Order();
-        $order->order_details_id = $this->createDetails($orderDTO->getUserDTO(), $orderDTO->getAddressDTO())->id;
+        $order->order_details_id = $this->storeOrderDetails($this->orderDTO->getUserDTO(), $this->orderDTO->getAddressDTO())->id;
         $order->user_id = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;
-        $order->state = OrderStateEnum::Placed; 
-        $order->payment_method = $orderDTO->getPaymentMethod();
-        $order->delivery_method = $orderDTO->getDeliveryMethod();
+        $order->state = OrderStateEnum::NotPaid; 
+        $order->payment_method = $this->orderDTO->getPaymentMethod();
+        $order->delivery_method = $this->orderDTO->getDeliveryMethod();
+        $order->payment_intent_id = $this->orderDTO->getPaymentIntentId();
         $order->save();
 
-        $this->storeOrderedProducts($orderDTO->getProductIds(), $order->id);
-
         return $order;
     }
 
-    public function update(UpdateOrderRequest $request, Order $order): Order
-    {
-        $orderDetails = OrderDetails::where('id', '=', $order->order_details_id);
-        $orderDetails->update($request->validated());
-
-        return $order;
-    }
-
-    private function createDetails(UserDetailsDTO $userDTO, AddressDTO $addressDTO): OrderDetails
+    private function storeOrderDetails(UserDetailsDTO $userDTO, AddressDTO $addressDTO): OrderDetails
     {
         return OrderDetails::create([
             'street' => $addressDTO->getStreet(),
@@ -63,7 +65,7 @@ class OrderService
         ]);   
     }
 
-    private function storeOrderedProducts(array $productIds, $orderId)
+    private function storeOrderedProducts(array $productIds, $orderId): void
     {
         foreach ($productIds as $productId){
             OrderedProduct::create([

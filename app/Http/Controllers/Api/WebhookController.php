@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\OrderPlacementJob;
+use App\Jobs\UpdateOrderState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -30,7 +31,7 @@ class WebhookController extends Controller
         }
 
         
-        OrderPlacementJob::dispatch($event->data->object->id);
+        UpdateOrderState::dispatch($event->data->object->id);
         
         
 

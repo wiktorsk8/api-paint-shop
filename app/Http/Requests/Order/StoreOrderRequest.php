@@ -25,19 +25,25 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id.*' => ['required', 'numeric', 'min:1', 'max:2147483647'],
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'email' => ['required' ,'email'],
-            'phone' => ['required', 'numeric', 'digits:9'],
-            'city' => ['required', 'string', 'min:2' , 'max:80'],
-            'postal_code' => ['required', 'digits:5'],
-            'street_name' => ['required', 'string','max:80'],
-            'street_number' => ['required', 'numeric', 'min:0'],
-            'flat_number' => ['nullable', 'numeric', 'min:0'],
-            'company_name' => ['nullable', 'string'],
-            'NIP' => ['nullable', 'numeric'],
-            'extra_info' => ['nullable', 'string']
+            'productId' => ['required', 'numeric', 'min:1', 'max:2147483647'],
+            'cartId' => 'required',
+            'paymentIntentId' => 'required',
+            'save' => 'required|boolean',
+            'userData.credentials.firstName' => 'required',
+            'userData.credentials.lastName' => 'required',
+            'userData.credentials.email' => 'required|email',
+            'userData.credentials.phone' => 'required',
+            'userData.userId' => 'nullable',
+            'userData.paymentMethod' => 'required',
+            'userData.deliveryMethod' => 'required',
+            'userData.address.city' => 'required',
+            'userData.address.postalCode' => 'required',
+            'userData.address.street' => 'required',
+            'userData.address.buildingNumber' => 'required',
+            'userData.address.countryCode' => 'required',
+            'userData.address.extraInfo' => 'nullable',
+            'userData.companyInfo.companyName' => 'nullable',
+            'userData.companyInfo.NIP' => 'nullable',
         ];
     }
 
