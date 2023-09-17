@@ -88,9 +88,6 @@ Route::controller(PaymentController::class)->group(function () {
     Route::post('/payment', 'process');
 });
 
-// Cart
-Route::get('/create-cart', [CartController::class, 'create']);
-
 Route::post('/webhook', [WebhookController::class, 'trigger']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
