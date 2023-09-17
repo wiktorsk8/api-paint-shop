@@ -36,7 +36,7 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $collection = collect($request->validated());
-
+        
         $userDTO = new UserDetailsDTO(
             $collection->get('userData.credentials.firstName'),
             $collection->get('userData.credentials.lastName'),

@@ -19,8 +19,6 @@ class UserService
         $this->user = Auth::user() ?: throw new Exception("User not authenticated");
         $this->userDTO = $userDTO;
         $this->addressDTO = $addressDTO;
-
-        
     }
 
     private function saveNewData() {

@@ -10,7 +10,7 @@ class AddressDTO{
         private readonly string $city,
         private readonly string $postalCode,
         private readonly string $countryCode,
-        private readonly string $extraInfo,
+        private readonly ?string $extraInfo,
     ){}
 
     public function getStreet(): string
