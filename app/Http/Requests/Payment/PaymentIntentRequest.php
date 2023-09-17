@@ -23,7 +23,6 @@ class PaymentIntentRequest extends FormRequest
     {
         return [
             'product_id.*' => 'required|numeric|min:1|max:2147483647',
-            'cart_id' => 'required|string',
             'payment_intent_id' => 'nullable|string'
         ];
     }
