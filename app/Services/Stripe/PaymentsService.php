@@ -13,13 +13,12 @@ class PaymentsService
 {
     private StripeClient $stripe;
 
-    private string $idempotencyKey;
 
-    public function process($paymentIntentId, $cartId, array $productIds): array
+    public function process($paymentIntentId, array $productIds): array
     {
         // TEST MODE ON
         $this->stripe = new StripeClient(config('services.stripe.secret-test'));
-        $this->idempotencyKey = $cartId;
+        
 
         $products = $this->fetchProducts($productIds);
 
@@ -49,9 +48,6 @@ class PaymentsService
                     // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
                     'payment_method' => 'pm_card_visa',
                     
-                ],
-                [
-                    'idempotency_key' => $this->idempotencyKey
                 ]
             );
 

@@ -20,7 +20,6 @@ class PaymentController extends Controller
 
         $clientSecret = $this->paymentService->process(
             $request->payment_intent_id,
-            $request->cart_id,
             $request->product_id
         );
 
