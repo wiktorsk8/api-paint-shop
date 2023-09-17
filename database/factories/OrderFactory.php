@@ -26,6 +26,7 @@ class OrderFactory extends Factory
             'user_id' => $this->randomId(User::class),
             'state' => OrderStateEnum::randomValue(),
             'payment_method' => "visa/twojastara/bitkojn",
+            'payment_intent_id' => "id_intenta_12312423dfshfsdk",
             'delivery_method' => "Inpost"
         ];
     }
