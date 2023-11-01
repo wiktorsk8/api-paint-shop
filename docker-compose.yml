@@ -1,19 +1,18 @@
 version: "3.9"
 services:
-    mariadb:
-        container_name: MariaDB
-        image: mariadb:latest
+    postgres:
+        container_name: postgres
+        image: postgres:latest
         environment:
-            - MYSQL_DATABASE=${DB_DATABASE}
-            - MYSQL_USER=${DB_USERNAME}
-            - MYSQL_PASSWORD=${DB_PASSWORD}
-            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_DATABASE}
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
         volumes:
-            - db-vol:/var/lib/mysql
+            - postgres-vol:/var/lib/postgres
         ports:
-            - ${DB_PORT}:3306
+            - ${DB_PORT}:5432
         restart: always
-       
+
     phpmyadmin:
         image: phpmyadmin
         restart: always
@@ -23,5 +22,5 @@ services:
         - PMA_ARBITRARY=1
 
 volumes:
-    db-vol:
+    postgres-vol:
         driver: local

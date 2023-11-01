@@ -9,7 +9,7 @@ use App\Models\Product;
 use App\DTO\OrderDTO;
 use App\DTO\UserDetailsDTO;
 use App\Enums\OrderStateEnum;
-use App\Http\Requests\Order\UpdateOrderRequest;
+use Illuminate\Support\Facades\DB;
 use App\Models\OrderDetails;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,51 +27,52 @@ class OrderService
 
         $this->orderDTO = $orderDTO;
 
-        $order = $this->storeOrder();
-        $this->storeOrderedProducts($this->orderDTO->getProductIds(), $order->id);
+        $order = $this->startTransaction();
+       // $this->storeOrderedProducts($this->orderDTO->getProductIds(), $order->id);
 
         return $order;
     }
 
-    private function storeOrder(): Order {
-        $order = new Order();
-        $order->order_details_id = $this->storeOrderDetails($this->orderDTO->getUserDTO(), $this->orderDTO->getAddressDTO())->id;
-        $order->user_id = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;
-        $order->state = OrderStateEnum::NotPaid; 
-        $order->payment_method = $this->orderDTO->getPaymentMethod();
-        $order->delivery_method = $this->orderDTO->getDeliveryMethod();
-        $order->payment_intent_id = $this->orderDTO->getPaymentIntentId();
-        $order->save();
+    private function startTransaction(AddressDTO $addressDTO, UserDetailsDTO $userDTO, $productIds){
+        DB::beginTransaction();
 
-        return $order;
-    }
+        try {
+            $orderDetailsId = DB::table('order_details')->insertGetId([
+                'street' => $addressDTO->getStreet(),
+                'building_number' => $addressDTO->getBuildingNumber(),
+                'city' => $addressDTO->getCity(),
+                'postal_code' => $addressDTO->getPostalCode(),
 
-    private function storeOrderDetails(UserDetailsDTO $userDTO, AddressDTO $addressDTO): OrderDetails
-    {
-        return OrderDetails::create([
-            'street' => $addressDTO->getStreet(),
-            'building_number' => $addressDTO->getBuildingNumber(),
-            'city' => $addressDTO->getCity(),
-            'postal_code' => $addressDTO->getPostalCode(),
+                'first_name' => $userDTO->getFirstName(),
+                'last_name' => $userDTO->getLastName(),
+                'phone' => $userDTO->getPhone(),
+                'email' => $userDTO->getEmail(),
 
-            'first_name' => $userDTO->getFirstName(),
-            'last_name' => $userDTO->getLastName(),
-            'phone' => $userDTO->getPhone(),
-            'email' => $userDTO->getEmail(),
-            
-            'company_name' => $userDTO->getCompanyName(),
-            'NIP' => $userDTO->getNIP(),
-            'extra_info' => $addressDTO->getExtraInfo(),
-        ]);   
-    }
-
-    private function storeOrderedProducts(array $productIds, $orderId): void
-    {
-        foreach ($productIds as $productId){
-            OrderedProduct::create([
-                'order_id' => $orderId,
-                'product_id' => $productId
+                'company_name' => $userDTO->getCompanyName(),
+                'NIP' => $userDTO->getNIP(),
+                'extra_info' => $addressDTO->getExtraInfo(),
             ]);
+
+            $order_id = DB::table('orders')->insertGetId([
+                'order_details_id' => $orderDetailsId,
+                'user_id' => Auth::guard('api')->check() ? Auth::guard('api')->id() : null,
+                'state' => OrderStateEnum::NotPaid,
+                'payment_method' => $this->orderDTO->getPaymentMethod(),
+                'delivery_method' => $this->orderDTO->getDeliveryMethod(),
+                'payment_intent_id' => $this->orderDTO->getPaymentIntentId(),
+            ]);
+
+            foreach ($productIds as $id){
+                DB::table('ordered_products')->insert([
+                    'order_id' => $order_id,
+                    'product_id' => $id
+                ]);
+            }
+
+            DB::commit();
+
+        }catch (\Exception $e){
+            DB::rollBack();
         }
     }
 }

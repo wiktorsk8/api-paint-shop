@@ -9,14 +9,11 @@ use App\DTO\UserInfoDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\SavePendingOrderData;
 use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\PendingOrderData;
 use App\Services\OrderService;
-use App\Services\UserService;
+use App\Services\User\UserService;
 use Exception;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -36,7 +33,7 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $collection = collect($request->validated());
-        
+
         $userDTO = new UserDetailsDTO(
             $collection->get('userData.credentials.firstName'),
             $collection->get('userData.credentials.lastName'),
@@ -56,7 +53,7 @@ class OrderController extends Controller
         );
 
         $orderDTO = new OrderDTO(
-            $userDTO, 
+            $userDTO,
             $addressDTO,
             $collection->get('paymentMethod'),
             $collection->get('deliveryMethod'),
@@ -69,7 +66,7 @@ class OrderController extends Controller
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
-        
+
 
         if ($collection->get('save')){
             $userService = new UserService();
@@ -77,9 +74,10 @@ class OrderController extends Controller
         }
 
         return response()->json([
-            'message' => "Order has been created. ID: {$order->id}"
+            'message' => "Order has been created successfully!",
+            'order_id' => $order->id
         ], 201);
-    }   
+    }
 
 
     public function show(Order $order)

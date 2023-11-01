@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\SaveShippingInfoRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Services\UserService;
-use Illuminate\Http\Request;
+use App\Services\User\UserService;
 
 class UserController extends Controller
 {

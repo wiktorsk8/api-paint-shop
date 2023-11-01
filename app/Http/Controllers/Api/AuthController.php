@@ -6,62 +6,39 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-
+use App\Services\User\AuthService;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
+    public function __construct(
+        protected AuthService $authService
+    ){}
+    public function register(RegisterRequest $request): JsonResponse
     {
+        $result = $this->authService->register(
+            $request->name,
+            $request->email,
+            $request->password);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_admin' => false,
-        ]);
-
-        $token = $user->createToken('auth-token')->plainTextToken;
-        return response()->json([
-            'token' => $token,
-            'user' => $user
-        ], 201);
+        return response()->json($result, 201);
     }
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
 
-        if (auth()->attempt($credentials)) {
-
-            /** @var User $user */
-            $user = Auth::user();
-            $token = $user->createToken('auth-token')->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user
-            ], 200);
-        } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        return $this->authService->login($credentials);
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
-        /** @var User $user */
-        $user = Auth::user();
-        if ($user) {
-            $user->currentAccessToken()->delete();
-        }
-
-        return response()->json(['message' => 'logged_out'], 200);
+        return $this->authService->logout();
     }
 
-    public function checkAuth(){
+    public function checkAuth(): JsonResponse{
          /** @var User $user */
-         
         return response()->json(['isUserAuth' => Auth::guard('api')->check()], 200);
     }
 }

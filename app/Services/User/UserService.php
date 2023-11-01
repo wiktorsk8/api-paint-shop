@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\DTO\AddressDTO;
 use App\DTO\UserDetailsDTO;
@@ -14,7 +14,8 @@ class UserService
     private UserDetailsDTO $userDTO;
     private AddressDTO $addressDTO;
 
-    public function saveData(UserDetailsDTO $userDTO, AddressDTO $addressDTO)
+    // This method saves user shipping data provided in checkout page. (If user set checkbox to true)
+    public function saveUserShippingData(UserDetailsDTO $userDTO, AddressDTO $addressDTO)
     {
         $this->user = Auth::user() ?: throw new Exception("User not authenticated");
         $this->userDTO = $userDTO;
